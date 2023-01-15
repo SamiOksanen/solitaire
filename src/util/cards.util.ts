@@ -5,7 +5,7 @@ type Enumerate<
     ? Acc[number]
     : Enumerate<N, [...Acc, Acc['length']]>;
 
-type IntRange<F extends number, T extends number> = Exclude<
+export type IntRange<F extends number, T extends number> = Exclude<
     Enumerate<T>,
     Enumerate<F>
 >;
@@ -20,6 +20,7 @@ export interface Card {
 export interface CardPosition {
     boardPosition: number;
     stackPosition: number;
+    revealed?: boolean;
 }
 
 export interface CardInGame extends Card, CardPosition {
@@ -59,6 +60,8 @@ const shuffle = (array: Card[]) => {
 };
 
 export const getCards = (numOfDecs: number = 1): Card[] =>
-    shuffle(deckOfCards.flatMap(
-        (i) => Array.from({ length: numOfDecs }).fill(i) as Card[]
-    ));
+    shuffle(
+        deckOfCards.flatMap(
+            (i) => Array.from({ length: numOfDecs }).fill(i) as Card[]
+        )
+    );
