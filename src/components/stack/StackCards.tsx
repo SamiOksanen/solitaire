@@ -51,6 +51,7 @@ const StackCards = ({ cards, spreadStyle }: StackCardsProps) => {
                                             return (
                                                 (ix2 === index ||
                                                     (c.isBeingDragged &&
+                                                        c2.isPartOfDragging &&
                                                         ix2 > index)) && (
                                                     <Card
                                                         key={ix2}

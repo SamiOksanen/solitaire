@@ -1,40 +1,32 @@
 'use client';
 
-import { CardInGame, CardPosition, getCards } from 'src/util/cards.util';
+import {
+    Card,
+    CardInGame,
+    CardPosition,
+    getCards,
+    getMaxStackPosition,
+    handleCardMovementEnd,
+    handleCardMovementStart,
+    Suit,
+} from 'src/util/cards.util';
 import React, { useState } from 'react';
 import { DragDropContext, DragStart, DropResult } from 'react-beautiful-dnd';
 import Stack from 'src/components/stack/Stack';
+import {
+    hasDifferentSuitColor,
+    isOneRankSmaller,
+} from 'src/util/validation.util';
 
-const cardPositionSetup: CardPosition[] = [
-    { boardPosition: 7, stackPosition: 0, revealed: true },
-    { boardPosition: 8, stackPosition: 0 },
-    { boardPosition: 9, stackPosition: 0 },
-    { boardPosition: 10, stackPosition: 0 },
-    { boardPosition: 11, stackPosition: 0 },
-    { boardPosition: 12, stackPosition: 0 },
-    { boardPosition: 13, stackPosition: 0 },
-    { boardPosition: 8, stackPosition: 1, revealed: true },
-    { boardPosition: 9, stackPosition: 1 },
-    { boardPosition: 10, stackPosition: 1 },
-    { boardPosition: 11, stackPosition: 1 },
-    { boardPosition: 12, stackPosition: 1 },
-    { boardPosition: 13, stackPosition: 1 },
-    { boardPosition: 9, stackPosition: 2, revealed: true },
-    { boardPosition: 10, stackPosition: 2 },
-    { boardPosition: 11, stackPosition: 2 },
-    { boardPosition: 12, stackPosition: 2 },
-    { boardPosition: 13, stackPosition: 2 },
-    { boardPosition: 10, stackPosition: 3, revealed: true },
-    { boardPosition: 11, stackPosition: 3 },
-    { boardPosition: 12, stackPosition: 3 },
-    { boardPosition: 13, stackPosition: 3 },
-    { boardPosition: 11, stackPosition: 4, revealed: true },
-    { boardPosition: 12, stackPosition: 4 },
-    { boardPosition: 13, stackPosition: 4 },
-    { boardPosition: 12, stackPosition: 5, revealed: true },
-    { boardPosition: 13, stackPosition: 5 },
-    { boardPosition: 13, stackPosition: 6, revealed: true },
-];
+const cardPositionSetup: CardPosition[] = Array.from(new Array(7), (_, i) => i)
+    .map((_, i) =>
+        Array.from(new Array(7 - i), (_, i2) => ({
+            boardPosition: i2 + 7 + i,
+            stackPosition: i,
+            revealed: i2 === 0,
+        }))
+    )
+    .flat();
 
 const getSetup = (): CardInGame[] =>
     getCards().map((c, i) => {
@@ -48,67 +40,73 @@ const getSetup = (): CardInGame[] =>
     });
 
 const Klondike = () => {
-    const [cards, updateCards] = useState(getSetup());
+    const [cards, setCards] = useState(getSetup());
+
+    const isAllowedMove = (result: DropResult): boolean => {
+        if (!result.destination) {
+            return false;
+        }
+        let isAllowed = true;
+        let firstDraggedCard: CardInGame | undefined;
+        let lastDestinationCard: CardInGame | undefined;
+        let previousCard: CardInGame | undefined;
+        cards.forEach((c) => {
+            if (
+                c.boardPosition === Number(result.source.droppableId) &&
+                c.stackPosition === result.source!.index
+            ) {
+                if (!c.revealed) {
+                    // todo: add alert
+                    console.log('Cannot move card faced down!');
+                    isAllowed = false;
+                    return;
+                }
+                firstDraggedCard = c;
+            }
+            if (
+                c.boardPosition === Number(result.destination!.droppableId) &&
+                c.stackPosition ===
+                    getMaxStackPosition(
+                        Number(result.destination!.droppableId),
+                        cards
+                    )
+            ) {
+                lastDestinationCard = c;
+            }
+        });
+
+        if (!isAllowed) {
+            return false;
+        }
+
+        if (firstDraggedCard && lastDestinationCard) {
+            if (!hasDifferentSuitColor(firstDraggedCard, lastDestinationCard)) {
+                // todo: add alert
+                console.log(
+                    'Cannot move the card on top of a card that has the same color of suit!'
+                );
+                return false;
+            }
+            if (!isOneRankSmaller(firstDraggedCard, lastDestinationCard)) {
+                // todo: add alert
+                console.log(
+                    'Cannot move the card on top of a card that is not one rank greater!'
+                );
+                return false;
+            }
+        }
+        return true;
+    };
 
     const handleOnDragStart = (start: DragStart) => {
         console.log('start', JSON.stringify(start));
-        const items = Array.from(cards);
-        const newCards = items.map((c) => {
-            if (
-                c.boardPosition === Number(start.source.droppableId) &&
-                c.stackPosition > start.source!.index
-            ) {
-                return {
-                    ...c,
-                    isPartOfDragging: true,
-                };
-            }
-            if (
-                c.boardPosition === Number(start.source.droppableId) &&
-                c.stackPosition === start.source!.index
-            ) {
-                return {
-                    ...c,
-                    isBeingDragged: true,
-                };
-            }
-            return c;
-        });
-        updateCards(newCards);
+        setCards(handleCardMovementStart(start, cards));
     };
 
     const handleOnDragEnd = (result: DropResult) => {
         console.log('result', JSON.stringify(result));
-        if (result.destination) {
-            const items = Array.from(cards);
-            const destinationMaxPosition = Math.max(
-                ...cards.map((c) =>
-                    c.boardPosition === Number(result.destination!.droppableId)
-                        ? c.stackPosition
-                        : -1
-                )
-            );
-            const newCards = items.map((c) => {
-                if (
-                    (c.boardPosition === Number(result.source.droppableId) ||
-                        c.boardPosition === 14) &&
-                    c.stackPosition >= result.source!.index
-                ) {
-                    return {
-                        ...c,
-                        boardPosition: Number(result.destination!.droppableId),
-                        stackPosition:
-                            destinationMaxPosition +
-                            c.stackPosition -
-                            result.source!.index +
-                            1,
-                        isBeingDragged: false,
-                        isPartOfDragging: false,
-                    };
-                }
-                return c;
-            }) as CardInGame[];
-            updateCards(newCards);
+        if (isAllowedMove(result)) {
+            setCards(handleCardMovementEnd(result, cards));
         }
     };
 
