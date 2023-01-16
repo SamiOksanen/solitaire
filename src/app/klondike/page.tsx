@@ -1,14 +1,12 @@
 'use client';
 
 import {
-    Card,
     CardInGame,
     CardPosition,
     getCards,
     getMaxStackPosition,
     handleCardMovementEnd,
     handleCardMovementStart,
-    Suit,
 } from 'src/util/cards.util';
 import React, { useState } from 'react';
 import { DragDropContext, DragStart, DropResult } from 'react-beautiful-dnd';
@@ -49,11 +47,10 @@ const Klondike = () => {
         let isAllowed = true;
         let firstDraggedCard: CardInGame | undefined;
         let lastDestinationCard: CardInGame | undefined;
-        let previousCard: CardInGame | undefined;
         cards.forEach((c) => {
             if (
                 c.boardPosition === Number(result.source.droppableId) &&
-                c.stackPosition === result.source!.index
+                c.stackPosition === result.source.index
             ) {
                 if (!c.revealed) {
                     // todo: add alert
@@ -64,10 +61,10 @@ const Klondike = () => {
                 firstDraggedCard = c;
             }
             if (
-                c.boardPosition === Number(result.destination!.droppableId) &&
+                c.boardPosition === Number(result.destination?.droppableId) &&
                 c.stackPosition ===
                     getMaxStackPosition(
-                        Number(result.destination!.droppableId),
+                        Number(result.destination?.droppableId),
                         cards
                     )
             ) {

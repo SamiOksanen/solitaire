@@ -61,7 +61,7 @@ const shuffle = (array: Card[]) => {
     return array;
 };
 
-export const getCards = (numOfDecs: number = 1): Card[] =>
+export const getCards = (numOfDecs = 1): Card[] =>
     shuffle(
         deckOfCards.flatMap(
             (i) => Array.from({ length: numOfDecs }).fill(i) as Card[]
@@ -86,7 +86,7 @@ export const handleCardMovementStart = (
     return items.map((c) => {
         if (
             c.boardPosition === Number(start.source.droppableId) &&
-            c.stackPosition > start.source!.index
+            c.stackPosition > start.source.index
         ) {
             return {
                 ...c,
@@ -95,7 +95,7 @@ export const handleCardMovementStart = (
         }
         if (
             c.boardPosition === Number(start.source.droppableId) &&
-            c.stackPosition === start.source!.index
+            c.stackPosition === start.source.index
         ) {
             return {
                 ...c,
@@ -112,21 +112,21 @@ export const handleCardMovementEnd = (
 ): CardInGame[] => {
     const items = Array.from(cards);
     const destinationMaxPosition = getMaxStackPosition(
-        Number(result.destination!.droppableId),
+        Number(result.destination?.droppableId),
         cards
     );
     return items.map((c) => {
         if (
             c.boardPosition === Number(result.source.droppableId) &&
-            c.stackPosition >= result.source!.index
+            c.stackPosition >= result.source.index
         ) {
             return {
                 ...c,
-                boardPosition: Number(result.destination!.droppableId),
+                boardPosition: Number(result.destination?.droppableId),
                 stackPosition:
                     destinationMaxPosition +
                     c.stackPosition -
-                    result.source!.index +
+                    result.source.index +
                     1,
                 isBeingDragged: false,
                 isPartOfDragging: false,
@@ -134,7 +134,7 @@ export const handleCardMovementEnd = (
         }
         if (
             c.boardPosition === Number(result.source.droppableId) &&
-            c.stackPosition === result.source!.index - 1 &&
+            c.stackPosition === result.source.index - 1 &&
             !c.revealed
         ) {
             return {
@@ -143,5 +143,5 @@ export const handleCardMovementEnd = (
             };
         }
         return c;
-    }) as CardInGame[];
+    });
 };

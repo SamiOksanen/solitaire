@@ -8,7 +8,7 @@ type CardProps = {
 };
 
 const Card = ({ suit, rank, revealed, spreadStyle }: CardProps) => {
-    let suitSymbol: string = '';
+    let suitSymbol = '';
     let color: 'text-black' | 'text-red-700' = 'text-black';
     switch (suit) {
         case 'clubs':
@@ -27,7 +27,7 @@ const Card = ({ suit, rank, revealed, spreadStyle }: CardProps) => {
             break;
     }
 
-    let content = revealed ? (
+    const content = revealed ? (
         `${suitSymbol} ${rank}`
     ) : (
         <div className="w-full h-full rounded-md bg-white p-1">

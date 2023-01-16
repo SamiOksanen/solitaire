@@ -32,8 +32,8 @@ const StackCards = ({ cards, spreadStyle }: StackCardsProps) => {
                     (c, index) =>
                         !c.isPartOfDragging && (
                             <Draggable
-                                key={c.suit + c.rank}
-                                draggableId={c.suit + c.rank}
+                                key={`${c.suit}${c.rank}`}
+                                draggableId={`${c.suit}${c.rank}`}
                                 index={index}
                             >
                                 {(provided, snapshot) => (

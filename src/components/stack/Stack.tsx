@@ -1,6 +1,6 @@
 import { CSSProperties } from 'react';
 import { CardInGame } from 'src/util/cards.util';
-import { StrictModeDroppable } from '../StrictModeDroppable';
+import { StrictModeDroppable } from 'src/components/StrictModeDroppable';
 import StackCards from './StackCards';
 
 const getTargetedStyle = (isTargetet: boolean): CSSProperties => ({
