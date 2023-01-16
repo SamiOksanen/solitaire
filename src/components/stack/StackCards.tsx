@@ -1,4 +1,4 @@
-import { CardInGame } from 'src/util/cards.util';
+import { CardInGame, SpreadStyle } from 'src/utils/cards.util';
 import { CSSProperties } from 'react';
 import {
     Draggable,
@@ -9,21 +9,38 @@ import Card from 'src/components/Card';
 
 type StackCardsProps = {
     cards: CardInGame[];
-    spreadStyle?: 'small';
+    spreadStyle?: SpreadStyle;
+    handleCardClick?: () => void;
 };
 
 const getDraggedItemStyle = (
     isDragged: boolean,
     draggableStyle: DraggingStyle | NotDraggingStyle | undefined,
-    spreadStyle?: 'small'
-): CSSProperties => ({
-    userSelect: 'none',
-    marginTop: isDragged ? '0' : spreadStyle === 'small' ? '-5rem' : '-3rem',
-    filter: isDragged ? 'drop-shadow(.1rem .25rem .25rem #475569)' : 'none',
-    ...draggableStyle,
-});
+    spreadStyle: SpreadStyle
+): CSSProperties => {
+    let marginTop: string;
+    if (isDragged) {
+        marginTop = '0';
+    } else if (spreadStyle === 'none') {
+        marginTop = '-6rem';
+    } else if (spreadStyle === 'sm') {
+        marginTop = '-5.5rem';
+    } else {
+        marginTop = '-3rem';
+    }
+    return {
+        userSelect: 'none',
+        marginTop: marginTop,
+        filter: isDragged ? 'drop-shadow(.1rem .25rem .25rem #475569)' : 'none',
+        ...draggableStyle,
+    };
+};
 
-const StackCards = ({ cards, spreadStyle }: StackCardsProps) => {
+const StackCards = ({
+    cards,
+    spreadStyle = 'md',
+    handleCardClick,
+}: StackCardsProps) => {
     const stackCards = cards.sort((a, b) => a.stackPosition - b.stackPosition);
     return (
         <>
@@ -60,6 +77,9 @@ const StackCards = ({ cards, spreadStyle }: StackCardsProps) => {
                                                         revealed={c2.revealed}
                                                         spreadStyle={
                                                             spreadStyle
+                                                        }
+                                                        handleClick={
+                                                            handleCardClick
                                                         }
                                                     />
                                                 )

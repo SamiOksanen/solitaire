@@ -7,14 +7,15 @@ import {
     getMaxStackPosition,
     handleCardMovementEnd,
     handleCardMovementStart,
-} from 'src/util/cards.util';
+    handleStockPileClick,
+} from 'src/utils/cards.util';
 import React, { useState } from 'react';
 import { DragDropContext, DragStart, DropResult } from 'react-beautiful-dnd';
 import Stack from 'src/components/stack/Stack';
 import {
     hasDifferentSuitColor,
     isOneRankSmaller,
-} from 'src/util/validation.util';
+} from 'src/utils/validation.util';
 
 const cardPositionSetup: CardPosition[] = Array.from(new Array(7), (_, i) => i)
     .map((_, i) =>
@@ -107,6 +108,10 @@ const Klondike = () => {
         }
     };
 
+    const handleStockPileCardClick = () => {
+        setCards(handleStockPileClick(cards));
+    };
+
     return (
         <DragDropContext
             onDragStart={handleOnDragStart}
@@ -116,11 +121,13 @@ const Klondike = () => {
                 <Stack
                     id={1}
                     cards={cards.filter((c) => c.boardPosition === 1)}
-                    spreadStyle="small"
+                    spreadStyle="sm"
+                    handleCardClick={() => handleStockPileCardClick()}
                 ></Stack>
                 <Stack
                     id={2}
                     cards={cards.filter((c) => c.boardPosition === 2)}
+                    spreadStyle="none"
                 ></Stack>
                 <div></div>
                 <Stack

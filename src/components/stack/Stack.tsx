@@ -1,5 +1,9 @@
 import { CSSProperties } from 'react';
-import { CardInGame } from 'src/util/cards.util';
+import {
+    CardInGame,
+    SpreadStyle,
+    spreadStyleMarginTopClasses,
+} from 'src/utils/cards.util';
 import { StrictModeDroppable } from 'src/components/StrictModeDroppable';
 import StackCards from './StackCards';
 
@@ -12,53 +16,47 @@ const getTargetedStyle = (isTargetet: boolean): CSSProperties => ({
 type StackProps = {
     id: number;
     cards: CardInGame[];
-    spreadStyle?: 'small';
+    spreadStyle?: SpreadStyle;
+    handleCardClick?: () => void;
 };
 
-const Stack = ({ id, cards, spreadStyle }: StackProps) => {
+const Stack = ({
+    id,
+    cards,
+    spreadStyle = 'md',
+    handleCardClick,
+}: StackProps) => {
     return (
         <StrictModeDroppable droppableId={`${id}`}>
-            {(provided, snapshot) =>
-                spreadStyle === 'small' ? (
+            {(provided, snapshot) => (
+                <div
+                    className={`relative ${spreadStyleMarginTopClasses[spreadStyle]} h-72 rounded-md`}
+                    ref={provided.innerRef}
+                    {...provided.droppableProps}
+                    style={getTargetedStyle(snapshot.isDraggingOver)}
+                    {...provided.droppableProps}
+                >
                     <div
-                        className="relative mt-22 h-72 rounded-md"
-                        ref={provided.innerRef}
-                        {...provided.droppableProps}
-                        style={getTargetedStyle(snapshot.isDraggingOver)}
-                        {...provided.droppableProps}
+                        className={`absolute w-full h-24 -${
+                            spreadStyleMarginTopClasses[spreadStyle]
+                        }${
+                            handleCardClick ? ' cursor-pointer' : ''
+                        } p-0.5 mb-2 mr-2 rounded-lg group bg-gradient-to-br from-red-200 via-red-300 to-yellow-200`}
+                        onClick={handleCardClick}
                     >
-                        <div className="absolute w-full h-24 -mt-22 p-0.5 mb-2 mr-2 rounded-lg group bg-gradient-to-br from-red-200 via-red-300 to-yellow-200">
-                            <div
-                                className="relative w-full h-full px-5 py-2.5 transition-all ease-in rounded-md"
-                                style={getTargetedStyle(
-                                    snapshot.isDraggingOver
-                                )}
-                            />
-                        </div>
-                        <StackCards cards={cards} spreadStyle={spreadStyle} />
-                        {provided.placeholder}
+                        <div
+                            className="relative w-full h-full px-5 py-2.5 transition-all ease-in rounded-md"
+                            style={getTargetedStyle(snapshot.isDraggingOver)}
+                        />
                     </div>
-                ) : (
-                    <div
-                        className="relative mt-12 h-72 rounded-md"
-                        ref={provided.innerRef}
-                        {...provided.droppableProps}
-                        style={getTargetedStyle(snapshot.isDraggingOver)}
-                        {...provided.droppableProps}
-                    >
-                        <div className="absolute w-full h-24 -mt-12 p-0.5 mb-2 mr-2 rounded-lg group bg-gradient-to-br from-red-200 via-red-300 to-yellow-200">
-                            <div
-                                className="relative w-full h-full px-5 py-2.5 transition-all ease-in rounded-md"
-                                style={getTargetedStyle(
-                                    snapshot.isDraggingOver
-                                )}
-                            />
-                        </div>
-                        <StackCards cards={cards} spreadStyle={spreadStyle} />
-                        {provided.placeholder}
-                    </div>
-                )
-            }
+                    <StackCards
+                        cards={cards}
+                        spreadStyle={spreadStyle}
+                        handleCardClick={handleCardClick}
+                    />
+                    {provided.placeholder}
+                </div>
+            )}
         </StrictModeDroppable>
     );
 };

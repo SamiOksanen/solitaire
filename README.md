@@ -2,7 +2,7 @@
 
 🚧 In Progress 🚧
 
-Solitaire with Drag and Drop. 
+Solitaire with drag and drop, and touch support.
 
 - Some notes about the implementation: 
     - Uses Next.js 13 app directory
