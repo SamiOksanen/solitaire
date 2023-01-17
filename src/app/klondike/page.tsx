@@ -70,7 +70,7 @@ const Klondike = () => {
             onDragEnd={handleOnDragEnd}
         >
             <div
-                className={`cards p-2 grid grid-rows-2 grid-cols-7 ${gridGapClass}`}
+                className={`cards max-w-6xl mx-auto p-2 grid grid-rows-2 grid-cols-7 ${gridGapClass}`}
             >
                 <Stack
                     id={1}

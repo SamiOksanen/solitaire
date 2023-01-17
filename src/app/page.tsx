@@ -1,9 +1,10 @@
+import Header from '@/components/Header';
 import Link from 'next/link';
 
 const Solitaire = () => {
     return (
         <div>
-            <h1 className="text-3xl font-bold py-2.5">Solitaire</h1>
+            <Header title="Solitaire" hasBackLink={false}></Header>
             <Link
                 key={'klondike-link'}
                 href={'klondike'}
