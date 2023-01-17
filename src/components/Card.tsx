@@ -3,7 +3,7 @@ import {
     SpreadStyle,
     spreadStyleMarginTopClasses,
     Suit,
-} from '@/utils/cards.util';
+} from 'src/utils/cards.util';
 
 type CardProps = {
     suit: Suit;

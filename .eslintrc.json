@@ -18,5 +18,6 @@
             "warn",
             { "allowSameFolder": true }
         ]
-    }
+    },
+    "ignorePatterns": ["tailwind.config.js"]
 }

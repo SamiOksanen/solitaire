@@ -32,12 +32,6 @@ export interface CardInGame extends Card, CardPosition {
     isPartOfDragging?: boolean;
 }
 
-export const spreadStyleMarginTopClasses: Record<SpreadStyle, string> = {
-    none: 'mt-24',
-    sm: 'mt-22',
-    md: 'mt-12',
-};
-
 const suits: Suit[] = ['clubs', 'diamonds', 'hearts', 'spades'];
 
 const deckOfCards: Card[] = suits
@@ -67,6 +61,18 @@ const shuffle = (array: Card[]) => {
     }
 
     return array;
+};
+
+export const spreadStyleMarginTopClasses: Record<SpreadStyle, string> = {
+    none: 'mt-24',
+    sm: 'mt-22',
+    md: 'mt-12',
+};
+
+export const spreadStylePileHeightClasses: Record<SpreadStyle, string> = {
+    none: 'h-60',
+    sm: 'h-62',
+    md: 'h-72',
 };
 
 export const getCards = (numOfDecs = 1): Card[] =>

@@ -3,6 +3,7 @@ import {
     CardInGame,
     SpreadStyle,
     spreadStyleMarginTopClasses,
+    spreadStylePileHeightClasses,
 } from 'src/utils/cards.util';
 import { StrictModeDroppable } from 'src/components/StrictModeDroppable';
 import StackCards from './StackCards';
@@ -30,7 +31,7 @@ const Stack = ({
         <StrictModeDroppable droppableId={`${id}`}>
             {(provided, snapshot) => (
                 <div
-                    className={`relative ${spreadStyleMarginTopClasses[spreadStyle]} h-72 rounded-md`}
+                    className={`relative ${spreadStyleMarginTopClasses[spreadStyle]} ${spreadStylePileHeightClasses[spreadStyle]} rounded-md`}
                     ref={provided.innerRef}
                     {...provided.droppableProps}
                     style={getTargetedStyle(snapshot.isDraggingOver)}
