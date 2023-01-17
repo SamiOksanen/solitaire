@@ -24,5 +24,8 @@ module.exports = {
     'h-60',
     'h-62',
     'h-72',
+    'gap-1',
+    'gap-2',
+    'gap-4',
   ]
 }

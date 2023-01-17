@@ -4,7 +4,6 @@ import {
     CardInGame,
     CardPosition,
     getCards,
-    getMaxStackPosition,
     handleCardMovementEnd,
     handleCardMovementStart,
     handleStockPileClick,
@@ -12,10 +11,8 @@ import {
 import React, { useState } from 'react';
 import { DragDropContext, DragStart, DropResult } from 'react-beautiful-dnd';
 import Stack from 'src/components/stack/Stack';
-import {
-    hasDifferentSuitColor,
-    isOneRankSmaller,
-} from 'src/utils/validation.util';
+import useScreenSize from '@/utils/hooks/useScreenSize';
+import { isAllowedMove } from './klondike.util';
 
 const cardPositionSetup: CardPosition[] = Array.from(new Array(7), (_, i) => i)
     .map((_, i) =>
@@ -40,61 +37,7 @@ const getSetup = (): CardInGame[] =>
 
 const Klondike = () => {
     const [cards, setCards] = useState(getSetup());
-
-    const isAllowedMove = (result: DropResult): boolean => {
-        if (!result.destination) {
-            return false;
-        }
-        let isAllowed = true;
-        let firstDraggedCard: CardInGame | undefined;
-        let lastDestinationCard: CardInGame | undefined;
-        cards.forEach((c) => {
-            if (
-                c.boardPosition === Number(result.source.droppableId) &&
-                c.stackPosition === result.source.index
-            ) {
-                if (!c.revealed) {
-                    // todo: add alert
-                    console.log('Cannot move card faced down!');
-                    isAllowed = false;
-                    return;
-                }
-                firstDraggedCard = c;
-            }
-            if (
-                c.boardPosition === Number(result.destination?.droppableId) &&
-                c.stackPosition ===
-                    getMaxStackPosition(
-                        Number(result.destination?.droppableId),
-                        cards
-                    )
-            ) {
-                lastDestinationCard = c;
-            }
-        });
-
-        if (!isAllowed) {
-            return false;
-        }
-
-        if (firstDraggedCard && lastDestinationCard) {
-            if (!hasDifferentSuitColor(firstDraggedCard, lastDestinationCard)) {
-                // todo: add alert
-                console.log(
-                    'Cannot move the card on top of a card that has the same color of suit!'
-                );
-                return false;
-            }
-            if (!isOneRankSmaller(firstDraggedCard, lastDestinationCard)) {
-                // todo: add alert
-                console.log(
-                    'Cannot move the card on top of a card that is not one rank greater!'
-                );
-                return false;
-            }
-        }
-        return true;
-    };
+    const screenSize = useScreenSize();
 
     const handleOnDragStart = (start: DragStart) => {
         console.log('start', JSON.stringify(start));
@@ -103,7 +46,7 @@ const Klondike = () => {
 
     const handleOnDragEnd = (result: DropResult) => {
         console.log('result', JSON.stringify(result));
-        if (isAllowedMove(result)) {
+        if (isAllowedMove(result, cards)) {
             setCards(handleCardMovementEnd(result, cards));
         }
     };
@@ -112,12 +55,23 @@ const Klondike = () => {
         setCards(handleStockPileClick(cards));
     };
 
+    let gridGapClass;
+    if (screenSize === 'xs') {
+        gridGapClass = 'gap-1';
+    } else if (screenSize === 'sm') {
+        gridGapClass = 'gap-2';
+    } else {
+        gridGapClass = 'gap-4';
+    }
+
     return (
         <DragDropContext
             onDragStart={handleOnDragStart}
             onDragEnd={handleOnDragEnd}
         >
-            <div className="cards p-2 grid grid-rows-2 grid-cols-7 gap-4">
+            <div
+                className={`cards p-2 grid grid-rows-2 grid-cols-7 ${gridGapClass}`}
+            >
                 <Stack
                     id={1}
                     cards={cards.filter((c) => c.boardPosition === 1)}
@@ -133,18 +87,22 @@ const Klondike = () => {
                 <Stack
                     id={3}
                     cards={cards.filter((c) => c.boardPosition === 3)}
+                    spreadStyle="sm"
                 ></Stack>
                 <Stack
                     id={4}
                     cards={cards.filter((c) => c.boardPosition === 4)}
+                    spreadStyle="sm"
                 ></Stack>
                 <Stack
                     id={5}
                     cards={cards.filter((c) => c.boardPosition === 5)}
+                    spreadStyle="sm"
                 ></Stack>
                 <Stack
                     id={6}
                     cards={cards.filter((c) => c.boardPosition === 6)}
+                    spreadStyle="sm"
                 ></Stack>
                 <Stack
                     id={7}

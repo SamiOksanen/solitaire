@@ -18,7 +18,7 @@ export type Suit = 'clubs' | 'diamonds' | 'hearts' | 'spades';
 
 export interface Card {
     suit: Suit;
-    rank: IntRange<1, 13>;
+    rank: IntRange<1, 14>;
 }
 
 export interface CardPosition {
@@ -38,7 +38,7 @@ const deckOfCards: Card[] = suits
     .map((suit) =>
         Array.from(new Array(13), (x, i) => i + 1).map((rank) => ({
             suit: suit,
-            rank: rank as IntRange<1, 13>,
+            rank: rank as IntRange<1, 14>,
         }))
     )
     .flat();
