@@ -7,9 +7,9 @@ export default function RootLayout({
     children: React.ReactNode;
 }) {
     return (
-        <div className="klondike">
+        <>
             <Header title="Klondike Solitaire" hasBackLink />
             <section>{children}</section>
-        </div>
+        </>
     );
 }

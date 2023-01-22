@@ -6,16 +6,16 @@ type HeaderProps = {
 };
 
 const Header = ({ title, hasBackLink }: HeaderProps) => (
-    <div className="cards max-w-7xl mx-auto p-2 grid grid-rows-1 grid-cols-5 gap-4">
+    <div className="cards max-w-7xl mx-auto p-2 grid grid-rows-1 grid-cols-3 gap-4">
         {hasBackLink && (
             <Link
                 key={'home-link'}
                 href={'/'}
                 passHref
                 replace
-                className="relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-red-200 via-red-300 to-yellow-200 group-hover:from-red-200 group-hover:via-red-300 group-hover:to-yellow-200 dark:text-white dark:hover:text-gray-900 focus:ring-4 focus:outline-none focus:ring-red-100 dark:focus:ring-red-400 mt-2"
+                className="relative inline-flex items-center justify-center p-0.5 mb-2 ml-2 max-w-fit overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-red-200 via-red-300 to-yellow-200 group-hover:from-red-200 group-hover:via-red-300 group-hover:to-yellow-200 dark:text-white dark:hover:text-gray-900 focus:ring-4 focus:outline-none focus:ring-red-100 dark:focus:ring-red-400 mt-2"
             >
-                <div className="relative inline-flex px-5 py-2.5 w-full h-full justify-center transition-all ease-in duration-75 bg-green-800 rounded-md group-hover:bg-opacity-0">
+                <div className="relative inline-flex items-center justify-center px-5 py-2.5 w-full h-full transition-all ease-in duration-75 bg-green-800 rounded-md group-hover:bg-opacity-0">
                     <svg
                         aria-hidden="true"
                         className="w-5 h-5 mr-2"
@@ -34,7 +34,7 @@ const Header = ({ title, hasBackLink }: HeaderProps) => (
             </Link>
         )}
         <h1
-            className="col-start-2 col-span-3 text-3xl font-bold py-2.5"
+            className="col-start-2 text-3xl text-white font-bold py-2.5"
             data-test-id="pageTitle"
         >
             {title}
