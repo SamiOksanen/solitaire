@@ -30,7 +30,7 @@ npm run start
 ```
 
 ### E2E Tests
-End-to-end tests are done with Playwright. \
+End-to-end tests are done with Playwright.
 
 To test locally:
 - Download browsers for Playwright to use if you have not already:
