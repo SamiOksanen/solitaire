@@ -1,4 +1,9 @@
-import { CardInGame, SpreadStyle } from 'src/utils/cards.util';
+import {
+    CardInGame,
+    CardSpreadStyle,
+    cardSpreadStyleMarginTopClasses,
+    SpreadStyle,
+} from 'src/utils/cards.util';
 import { CSSProperties } from 'react';
 import {
     Draggable,
@@ -15,12 +20,15 @@ type StackCardsProps = {
 
 const getDraggedItemStyle = (
     isDragged: boolean,
+    isDropAnimating: boolean,
     draggableStyle: DraggingStyle | NotDraggingStyle | undefined,
-    spreadStyle: SpreadStyle
+    spreadStyle: CardSpreadStyle
 ): CSSProperties => {
     let marginTop: string;
-    if (isDragged) {
-        marginTop = '0';
+    if (isDropAnimating) {
+        marginTop = '-3rem';
+    } else if (spreadStyle === 'base') {
+        marginTop = '-3rem';
     } else if (spreadStyle === 'none') {
         marginTop = '-6rem';
     } else if (spreadStyle === 'sm') {
@@ -30,7 +38,7 @@ const getDraggedItemStyle = (
     }
     return {
         userSelect: 'none',
-        marginTop: marginTop,
+        marginTop,
         filter: isDragged ? 'drop-shadow(.1rem .25rem .25rem #475569)' : 'none',
         ...draggableStyle,
     };
@@ -53,40 +61,63 @@ const StackCards = ({
                                 draggableId={`${c.suit}${c.rank}`}
                                 index={index}
                             >
-                                {(provided, snapshot) => (
-                                    <div
-                                        ref={provided.innerRef}
-                                        {...provided.draggableProps}
-                                        {...provided.dragHandleProps}
-                                        style={getDraggedItemStyle(
-                                            snapshot.isDragging,
-                                            provided.draggableProps.style,
-                                            spreadStyle
-                                        )}
-                                    >
-                                        {stackCards.map((c2, ix2) => {
-                                            return (
-                                                (ix2 === index ||
-                                                    (c.isBeingDragged &&
-                                                        c2.isPartOfDragging &&
-                                                        ix2 > index)) && (
-                                                    <Card
-                                                        key={ix2}
-                                                        suit={c2.suit}
-                                                        rank={c2.rank}
-                                                        revealed={c2.revealed}
-                                                        spreadStyle={
-                                                            spreadStyle
-                                                        }
-                                                        handleClick={
-                                                            handleCardClick
-                                                        }
-                                                    />
-                                                )
-                                            );
-                                        })}
-                                    </div>
-                                )}
+                                {(provided, snapshot) => {
+                                    let cardSpreadStyle: CardSpreadStyle;
+                                    if (index === 0) {
+                                        cardSpreadStyle = 'base';
+                                    } else if (
+                                        (!c.revealed ||
+                                            (index !== 0 &&
+                                                !stackCards[index - 1]
+                                                    .revealed)) &&
+                                        spreadStyle === 'md'
+                                    ) {
+                                        cardSpreadStyle = 'sm';
+                                    } else {
+                                        cardSpreadStyle = spreadStyle;
+                                    }
+                                    return (
+                                        <div
+                                            ref={provided.innerRef}
+                                            {...provided.draggableProps}
+                                            {...provided.dragHandleProps}
+                                            style={getDraggedItemStyle(
+                                                snapshot.isDragging,
+                                                snapshot.isDropAnimating,
+                                                provided.draggableProps.style,
+                                                cardSpreadStyle
+                                            )}
+                                        >
+                                            {stackCards.map((c2, ix2) => {
+                                                return (
+                                                    (ix2 === index ||
+                                                        (c.isBeingDragged &&
+                                                            c2.isPartOfDragging &&
+                                                            ix2 > index)) && (
+                                                        <Card
+                                                            key={ix2}
+                                                            suit={c2.suit}
+                                                            rank={c2.rank}
+                                                            revealed={
+                                                                c2.revealed
+                                                            }
+                                                            additionalStyleClass={
+                                                                c.isBeingDragged &&
+                                                                c2.isPartOfDragging &&
+                                                                ix2 > index
+                                                                    ? `-${cardSpreadStyleMarginTopClasses[spreadStyle]}`
+                                                                    : ''
+                                                            }
+                                                            handleClick={
+                                                                handleCardClick
+                                                            }
+                                                        />
+                                                    )
+                                                );
+                                            })}
+                                        </div>
+                                    );
+                                }}
                             </Draggable>
                         )
                 )}

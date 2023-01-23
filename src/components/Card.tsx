@@ -1,15 +1,10 @@
-import {
-    IntRange,
-    SpreadStyle,
-    spreadStyleMarginTopClasses,
-    Suit,
-} from 'src/utils/cards.util';
+import { IntRange, Suit } from 'src/utils/cards.util';
 
 type CardProps = {
     suit: Suit;
-    rank: IntRange<1, 13>;
+    rank: IntRange<1, 14>;
     revealed?: boolean;
-    spreadStyle?: SpreadStyle;
+    additionalStyleClass: string;
     handleClick?: () => void;
 };
 
@@ -17,7 +12,7 @@ const Card = ({
     suit,
     rank,
     revealed,
-    spreadStyle = 'md',
+    additionalStyleClass,
     handleClick,
 }: CardProps) => {
     let suitSymbol = '';
@@ -52,7 +47,7 @@ const Card = ({
 
     return (
         <div
-            className={`relative h-24 -${spreadStyleMarginTopClasses[spreadStyle]} bg-slate-50 border-solid border rounded-md border-slate-700 ${color}`}
+            className={`relative h-24 ${additionalStyleClass} bg-slate-50 border-solid border rounded-md border-slate-700 ${color}`}
             onClick={() => handleClick && handleClick()}
         >
             {content}

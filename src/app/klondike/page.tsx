@@ -40,15 +40,13 @@ const Klondike = () => {
     const screenSize = useScreenSize();
 
     const handleOnDragStart = (start: DragStart) => {
-        console.log('start', JSON.stringify(start));
         setCards(handleCardMovementStart(start, cards));
     };
 
     const handleOnDragEnd = (result: DropResult) => {
-        console.log('result', JSON.stringify(result));
-        if (isAllowedMove(result, cards)) {
-            setCards(handleCardMovementEnd(result, cards));
-        }
+        setCards(
+            handleCardMovementEnd(result, cards, isAllowedMove(result, cards))
+        );
     };
 
     const handleStockPileCardClick = () => {
@@ -70,7 +68,7 @@ const Klondike = () => {
             onDragEnd={handleOnDragEnd}
         >
             <div
-                className={`cards max-w-6xl mx-auto p-2 grid grid-rows-2 grid-cols-7 ${gridGapClass}`}
+                className={`cards max-w-6xl mx-auto px-2 grid grid-rows-2 grid-cols-7 ${gridGapClass}`}
             >
                 <Stack
                     id={1}

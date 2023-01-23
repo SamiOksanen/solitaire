@@ -14,6 +14,8 @@ export type IntRange<F extends number, T extends number> = Exclude<
 
 export type SpreadStyle = 'none' | 'sm' | 'md';
 
+export type CardSpreadStyle = 'base' | SpreadStyle;
+
 export type Suit = 'clubs' | 'diamonds' | 'hearts' | 'spades';
 
 export interface Card {
@@ -63,16 +65,18 @@ const shuffle = (array: Card[]) => {
     return array;
 };
 
-export const spreadStyleMarginTopClasses: Record<SpreadStyle, string> = {
-    none: 'mt-24',
-    sm: 'mt-22',
-    md: 'mt-12',
-};
+export const cardSpreadStyleMarginTopClasses: Record<CardSpreadStyle, string> =
+    {
+        base: 'mt-12',
+        none: 'mt-24',
+        sm: 'mt-22',
+        md: 'mt-12',
+    };
 
 export const spreadStylePileHeightClasses: Record<SpreadStyle, string> = {
     none: 'h-60',
-    sm: 'h-62',
-    md: 'h-72',
+    sm: 'h-60',
+    md: 'h-80',
 };
 
 export const getCards = (numOfDecs = 1): Card[] =>
@@ -114,32 +118,47 @@ export const handleCardMovementStart = (
 
 export const handleCardMovementEnd = (
     result: DropResult,
-    cards: CardInGame[]
+    cards: CardInGame[],
+    isAllowed: boolean
 ): CardInGame[] => {
     const items = Array.from(cards);
-    const destinationMaxPosition = getMaxStackPosition(
-        Number(result.destination?.droppableId),
-        cards
-    );
     const sourceCards = items.filter(
         (c) => c.boardPosition === Number(result.source.droppableId)
     );
-    sourceCards.forEach((c) => {
-        if (c.stackPosition >= result.source.index) {
-            c.boardPosition = Number(result.destination?.droppableId);
-            c.stackPosition =
-                destinationMaxPosition +
-                c.stackPosition -
-                result.source.index +
-                1;
-            c.isBeingDragged = false;
-            c.isPartOfDragging = false;
-        } else {
-            if (c.stackPosition === result.source.index - 1 && !c.revealed) {
-                c.revealed = true;
+    if (isAllowed) {
+        const destinationMaxPosition = getMaxStackPosition(
+            Number(result.destination?.droppableId),
+            cards
+        );
+
+        sourceCards.forEach((c) => {
+            if (c.stackPosition >= result.source.index) {
+                c.boardPosition = Number(result.destination?.droppableId);
+                c.stackPosition =
+                    destinationMaxPosition +
+                    c.stackPosition -
+                    result.source.index +
+                    1;
+                c.isBeingDragged = false;
+                c.isPartOfDragging = false;
+            } else {
+                if (
+                    c.stackPosition === result.source.index - 1 &&
+                    !c.revealed
+                ) {
+                    c.revealed = true;
+                }
             }
-        }
-    });
+        });
+    } else {
+        sourceCards.forEach((c) => {
+            if (c.stackPosition >= result.source.index) {
+                c.isBeingDragged = false;
+                c.isPartOfDragging = false;
+            }
+        });
+    }
+
     return items;
 };
 

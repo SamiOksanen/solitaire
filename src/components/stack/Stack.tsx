@@ -2,7 +2,6 @@ import { CSSProperties } from 'react';
 import {
     CardInGame,
     SpreadStyle,
-    spreadStyleMarginTopClasses,
     spreadStylePileHeightClasses,
 } from 'src/utils/cards.util';
 import { StrictModeDroppable } from 'src/components/StrictModeDroppable';
@@ -31,16 +30,14 @@ const Stack = ({
         <StrictModeDroppable droppableId={`${id}`}>
             {(provided, snapshot) => (
                 <div
-                    className={`relative ${spreadStyleMarginTopClasses[spreadStyle]} ${spreadStylePileHeightClasses[spreadStyle]} rounded-md`}
+                    className={`relative mt-12 ${spreadStylePileHeightClasses[spreadStyle]} rounded-md`}
                     ref={provided.innerRef}
                     {...provided.droppableProps}
                     style={getTargetedStyle(snapshot.isDraggingOver)}
                     {...provided.droppableProps}
                 >
                     <div
-                        className={`absolute w-full h-24 -${
-                            spreadStyleMarginTopClasses[spreadStyle]
-                        }${
+                        className={`absolute w-full -mt-12 h-24 ${
                             handleCardClick ? ' cursor-pointer' : ''
                         } p-0.5 mb-2 mr-2 rounded-lg group bg-gradient-to-br from-red-200 via-red-300 to-yellow-200`}
                         onClick={handleCardClick}
