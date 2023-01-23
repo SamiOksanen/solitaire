@@ -67,16 +67,16 @@ const shuffle = (array: Card[]) => {
 
 export const cardSpreadStyleMarginTopClasses: Record<CardSpreadStyle, string> =
     {
-        base: 'mt-12',
+        base: 'mt-16',
         none: 'mt-24',
         sm: 'mt-22',
-        md: 'mt-12',
+        md: 'mt-16',
     };
 
 export const spreadStylePileHeightClasses: Record<SpreadStyle, string> = {
     none: 'h-60',
     sm: 'h-60',
-    md: 'h-80',
+    md: 'h-76',
 };
 
 export const getCards = (numOfDecs = 1): Card[] =>

@@ -26,15 +26,15 @@ const getDraggedItemStyle = (
 ): CSSProperties => {
     let marginTop: string;
     if (isDropAnimating) {
-        marginTop = '-3rem';
+        marginTop = '-4rem';
     } else if (spreadStyle === 'base') {
-        marginTop = '-3rem';
+        marginTop = '-4rem';
     } else if (spreadStyle === 'none') {
         marginTop = '-6rem';
     } else if (spreadStyle === 'sm') {
         marginTop = '-5.5rem';
     } else {
-        marginTop = '-3rem';
+        marginTop = '-4rem';
     }
     return {
         userSelect: 'none',

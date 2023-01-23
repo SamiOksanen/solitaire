@@ -8,6 +8,9 @@ module.exports = {
         margin: {
             '22': '5.5rem',
         },
+        height: {
+            '76': '19rem',
+        },
         maxWidth: {
             '9/10': '90%',
         },
@@ -15,16 +18,16 @@ module.exports = {
   },
   plugins: [],
   safelist: [
-    'mt-12',
+    'mt-16',
     'mt-22',
     'mt-24',
-    '-mt-12',
+    '-mt-16',
     '-mt-22',
     '-mt-24',
     'h-60',
-    'h-80',
-    'gap-1',
-    'gap-2',
-    'gap-4',
+    'h-76',
+    'gap-x-1',
+    'gap-x-2',
+    'gap-x-4',
   ]
 }

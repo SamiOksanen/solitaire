@@ -80,11 +80,11 @@ const Klondike = () => {
 
     let gridGapClass;
     if (screenSize === 'xs') {
-        gridGapClass = 'gap-1';
+        gridGapClass = 'gap-x-1';
     } else if (screenSize === 'sm') {
-        gridGapClass = 'gap-2';
+        gridGapClass = 'gap-x-2';
     } else {
-        gridGapClass = 'gap-4';
+        gridGapClass = 'gap-x-4';
     }
 
     return (
