@@ -13,21 +13,23 @@ const foundations = [3, 4, 5, 6];
 
 export const isAllowedMove = (
     result: DropResult,
-    cards: CardInGame[]
+    cards: CardInGame[],
+    openModal: (content: string) => void
 ): boolean => {
     if (!result.destination) {
         return false;
     }
     const source = Number(result.source.droppableId);
-    if (blockedSources.includes(source)) {
-        // todo: add alert
-        console.log('Cannot move cards from the stock pile!');
+    const destination = Number(result.destination.droppableId);
+    if (source === destination) {
         return false;
     }
-    const destination = Number(result.destination.droppableId);
+    if (blockedSources.includes(source)) {
+        openModal('Cannot move cards from the stock pile!');
+        return false;
+    }
     if (blockedDestinations.includes(destination)) {
-        // todo: add alert
-        console.log('Cannot put cards to the stock pile or the waste pile!');
+        openModal('Cannot put cards to the stock pile or the waste pile!');
         return false;
     }
     let isAllowed = true;
@@ -39,8 +41,7 @@ export const isAllowedMove = (
             c.stackPosition === result.source.index
         ) {
             if (!c.revealed) {
-                // todo: add alert
-                console.log('Cannot move card faced down!');
+                openModal('Cannot move card faced down!');
                 isAllowed = false;
                 return;
             }
@@ -62,23 +63,20 @@ export const isAllowedMove = (
         if (foundations.includes(destination)) {
             if (!lastDestinationCard) {
                 if (firstDraggedCard.rank != 1) {
-                    // todo: add alert
-                    console.log(
+                    openModal(
                         'Foundation piles can only be started with an Ace!'
                     );
                     return false;
                 }
             } else {
                 if (!hasSameSuit(firstDraggedCard, lastDestinationCard)) {
-                    // todo: add alert
-                    console.log(
+                    openModal(
                         'Cannot move the card on top of a card on foundation pile that has different suit!'
                     );
                     return false;
                 }
                 if (!isOneRankGreater(firstDraggedCard, lastDestinationCard)) {
-                    // todo: add alert
-                    console.log(
+                    openModal(
                         'Cannot move the card on top of a foundation pile card that is not one rank lower!'
                     );
                     return false;
@@ -87,23 +85,20 @@ export const isAllowedMove = (
         } else {
             if (!lastDestinationCard) {
                 if (firstDraggedCard.rank != 13) {
-                    // todo: add alert
-                    console.log(
+                    openModal(
                         'Empty tableau piles can only be started with a King!'
                     );
                     return false;
                 }
             } else {
                 if (hasSameSuitColor(firstDraggedCard, lastDestinationCard)) {
-                    // todo: add alert
-                    console.log(
+                    openModal(
                         'Cannot move the card on top of a card that has the same color of suit!'
                     );
                     return false;
                 }
                 if (!isOneRankLower(firstDraggedCard, lastDestinationCard)) {
-                    // todo: add alert
-                    console.log(
+                    openModal(
                         'Cannot move the card on top of a card that is not one rank greater!'
                     );
                     return false;

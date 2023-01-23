@@ -1,5 +1,7 @@
 'use client';
 
+import React, { useState } from 'react';
+import { DragDropContext, DragStart, DropResult } from 'react-beautiful-dnd';
 import {
     CardInGame,
     CardPosition,
@@ -8,11 +10,10 @@ import {
     handleCardMovementStart,
     handleStockPileClick,
 } from 'src/utils/cards.util';
-import React, { useState } from 'react';
-import { DragDropContext, DragStart, DropResult } from 'react-beautiful-dnd';
 import Stack from 'src/components/stack/Stack';
 import useScreenSize from '@/utils/hooks/useScreenSize';
 import { isAllowedMove } from './klondike.util';
+import AlertModal from '@/components/AlertModal';
 
 const cardPositionSetup: CardPosition[] = Array.from(new Array(7), (_, i) => i)
     .map((_, i) =>
@@ -37,6 +38,9 @@ const getSetup = (): CardInGame[] =>
 
 const Klondike = () => {
     const [cards, setCards] = useState(getSetup());
+    const [modalIsOpen, setIsOpen] = useState(false);
+    const [modalContent, setModalContent] = useState('');
+
     const screenSize = useScreenSize();
 
     const handleOnDragStart = (start: DragStart) => {
@@ -45,12 +49,25 @@ const Klondike = () => {
 
     const handleOnDragEnd = (result: DropResult) => {
         setCards(
-            handleCardMovementEnd(result, cards, isAllowedMove(result, cards))
+            handleCardMovementEnd(
+                result,
+                cards,
+                isAllowedMove(result, cards, openModal)
+            )
         );
     };
 
     const handleStockPileCardClick = () => {
         setCards(handleStockPileClick(cards));
+    };
+
+    const openModal = (content: string) => {
+        setModalContent(content);
+        setIsOpen(true);
+    };
+
+    const closeModal = () => {
+        setIsOpen(false);
     };
 
     let gridGapClass;
@@ -68,6 +85,7 @@ const Klondike = () => {
             onDragEnd={handleOnDragEnd}
         >
             <div
+                id="cards"
                 className={`cards max-w-6xl mx-auto px-2 grid grid-rows-2 grid-cols-7 ${gridGapClass}`}
             >
                 <Stack
@@ -131,6 +149,11 @@ const Klondike = () => {
                     cards={cards.filter((c) => c.boardPosition === 13)}
                 ></Stack>
             </div>
+            <AlertModal
+                isOpen={modalIsOpen}
+                close={closeModal}
+                content={modalContent}
+            />
         </DragDropContext>
     );
 };

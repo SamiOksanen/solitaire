@@ -8,9 +8,9 @@ module.exports = {
         margin: {
             '22': '5.5rem',
         },
-        height: {
-            '62': '15.5rem',
-        }
+        maxWidth: {
+            '9/10': '90%',
+        },
     },
   },
   plugins: [],
