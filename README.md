@@ -51,3 +51,9 @@ To test locally:
   ```bash
   npx playwright codegen localhost:3000
   ```
+
+## Deployment 🚚
+https://solitaire.samioksanen.fi
+
+## CI/CD 🛠
+Vercel 
