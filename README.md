@@ -1,7 +1,5 @@
 # Solitaire
 
-🚧 In Progress 🚧
-
 Solitaire with drag and drop, and touch support.
 
 - Some notes about the implementation: 
