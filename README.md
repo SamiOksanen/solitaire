@@ -1,4 +1,4 @@
-# Solitaire
+# Solitaire ♣️♦️♠️♥️
 
 Solitaire with drag and drop, and touch support.
 
