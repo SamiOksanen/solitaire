@@ -1,7 +1,8 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { DragDropContext, DragStart, DropResult } from 'react-beautiful-dnd';
+import Confetti from 'react-confetti';
 import {
     CardInGame,
     CardPosition,
@@ -11,9 +12,9 @@ import {
     handleStockPileClick,
 } from 'src/utils/cards.util';
 import Stack from 'src/components/stack/Stack';
-import useScreenSize from '@/utils/hooks/useScreenSize';
-import { isAllowedMove } from './klondike.util';
-import AlertModal from '@/components/AlertModal';
+import useScreenSize from 'src/utils/hooks/useScreenSize';
+import { isAllowedMove, isCompleted } from './klondike.util';
+import AlertModal from 'src/components/AlertModal';
 
 const cardPositionSetup: CardPosition[] = Array.from(new Array(7), (_, i) => i)
     .map((_, i) =>
@@ -40,6 +41,7 @@ const Klondike = () => {
     const [cards, setCards] = useState(getSetup());
     const [modalIsOpen, setIsOpen] = useState(false);
     const [modalContent, setModalContent] = useState('');
+    const [completed, setCompleted] = useState(false);
 
     const screenSize = useScreenSize();
 
@@ -56,6 +58,12 @@ const Klondike = () => {
             )
         );
     };
+
+    useEffect(() => {
+        if (isCompleted(cards)) {
+            setCompleted(true);
+        }
+    }, [cards]);
 
     const handleStockPileCardClick = () => {
         setCards(handleStockPileClick(cards));
@@ -154,6 +162,7 @@ const Klondike = () => {
                 close={closeModal}
                 content={modalContent}
             />
+            {completed && <Confetti />}
         </DragDropContext>
     );
 };

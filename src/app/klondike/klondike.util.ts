@@ -108,3 +108,13 @@ export const isAllowedMove = (
     }
     return true;
 };
+
+export const isCompleted = (cards: CardInGame[]): boolean => {
+    let completed = true;
+    foundations.forEach((f) => {
+        if (cards.filter((c) => c.boardPosition === f).length !== 13) {
+            completed = false;
+        }
+    });
+    return completed;
+};
