@@ -7,13 +7,16 @@ import {
     CardInGame,
     CardPosition,
     getCards,
+    gridGapXClass,
+    gridGapYClass,
     handleCardMovementEnd,
     handleCardMovementStart,
     handleStockPileClick,
 } from 'src/utils/cards.util';
 import Stack from 'src/components/stack/Stack';
-import useScreenSize from 'src/utils/hooks/useScreenSize';
-import { isAllowedMove, isCompleted } from './klondike.util';
+import useScreenHeight from '@/utils/hooks/useScreenHeight';
+import useScreenWidth from '@/utils/hooks/useScreenWidth';
+import { isAllowedMove, isCompleted } from 'src/app/klondike/klondike.util';
 import AlertModal from 'src/components/AlertModal';
 
 const cardPositionSetup: CardPosition[] = Array.from(new Array(7), (_, i) => i)
@@ -43,7 +46,8 @@ const Klondike = () => {
     const [modalContent, setModalContent] = useState('');
     const [completed, setCompleted] = useState(false);
 
-    const screenSize = useScreenSize();
+    const screenHeight = useScreenHeight();
+    const screenWidth = useScreenWidth();
 
     const handleOnDragStart = (start: DragStart) => {
         setCards(handleCardMovementStart(start, cards));
@@ -78,15 +82,6 @@ const Klondike = () => {
         setIsOpen(false);
     };
 
-    let gridGapClass;
-    if (screenSize === 'xs') {
-        gridGapClass = 'gap-x-1';
-    } else if (screenSize === 'sm') {
-        gridGapClass = 'gap-x-2';
-    } else {
-        gridGapClass = 'gap-x-4';
-    }
-
     return (
         <DragDropContext
             onDragStart={handleOnDragStart}
@@ -94,7 +89,7 @@ const Klondike = () => {
         >
             <div
                 id="cards"
-                className={`cards max-w-6xl mx-auto px-2 grid grid-rows-2 grid-cols-7 ${gridGapClass}`}
+                className={`cards items-end max-w-6xl mx-auto -mt-22 px-2 grid grid-rows-2 grid-cols-7 ${gridGapYClass[screenHeight]} ${gridGapXClass[screenWidth]}`}
             >
                 <Stack
                     id={1}

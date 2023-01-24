@@ -34,7 +34,7 @@ const Header = ({ title, hasBackLink }: HeaderProps) => (
             </Link>
         )}
         <h1
-            className="col-start-2 text-3xl text-white font-bold py-2.5"
+            className="col-start-2 whitespace-nowrap text-3xl text-white font-bold py-2.5"
             data-test-id="pageTitle"
         >
             {title}

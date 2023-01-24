@@ -9,6 +9,7 @@ module.exports = {
             '22': '5.5rem',
         },
         height: {
+            '54': '13.5rem',
             '76': '19rem',
         },
         maxWidth: {
@@ -24,7 +25,7 @@ module.exports = {
     '-mt-16',
     '-mt-22',
     '-mt-24',
-    'h-60',
+    'h-54',
     'h-76',
     'gap-x-1',
     'gap-x-2',

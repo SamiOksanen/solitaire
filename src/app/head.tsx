@@ -3,7 +3,7 @@ export default function Head() {
         <>
             <title>Solitaire</title>
             <meta
-                content="width=device-width, initial-scale=1"
+                content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover"
                 name="viewport"
             />
             <meta name="description" content="Solitaire app" />

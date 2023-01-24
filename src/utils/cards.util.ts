@@ -1,4 +1,6 @@
 import { DragStart, DropResult } from 'react-beautiful-dnd';
+import { ScreenHeight } from 'src/utils/hooks/useScreenHeight';
+import { ScreenWidth } from 'src/utils/hooks/useScreenWidth';
 
 type Enumerate<
     N extends number,
@@ -74,9 +76,22 @@ export const cardSpreadStyleMarginTopClasses: Record<CardSpreadStyle, string> =
     };
 
 export const spreadStylePileHeightClasses: Record<SpreadStyle, string> = {
-    none: 'h-60',
-    sm: 'h-60',
+    none: 'h-54',
+    sm: 'h-54',
     md: 'h-76',
+};
+
+export const gridGapXClass: Record<ScreenWidth, string> = {
+    xs: 'gap-x-1',
+    sm: 'gap-x-2',
+    md: 'gap-x-4',
+};
+
+export const gridGapYClass: Record<ScreenHeight, string> = {
+    sm: 'gap-y-4',
+    md: 'gap-y-8',
+    lg: 'gap-y-12',
+    xl: 'gap-y-16',
 };
 
 export const getCards = (numOfDecs = 1): Card[] =>
