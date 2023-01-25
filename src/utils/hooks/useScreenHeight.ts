@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-export type ScreenHeight = 'sm' | 'md' | 'lg' | 'xl';
+export type ScreenHeight = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 
 const getScreenHeight = (): ScreenHeight => {
     if (typeof window !== 'undefined') {
@@ -12,6 +12,9 @@ const getScreenHeight = (): ScreenHeight => {
         }
         if (window.innerHeight >= 842) {
             return 'md';
+        }
+        if (window.innerHeight <= 762) {
+            return 'xs';
         }
     }
     return 'sm';

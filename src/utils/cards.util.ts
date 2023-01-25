@@ -67,18 +67,131 @@ const shuffle = (array: Card[]) => {
     return array;
 };
 
-export const cardSpreadStyleMarginTopClasses: Record<CardSpreadStyle, string> =
-    {
+export const gridMaxWidthClasses: Record<ScreenHeight, string> = {
+    xs: 'max-w-4xl',
+    sm: 'max-w-4xl',
+    md: 'max-w-6xl',
+    lg: 'max-w-6xl',
+    xl: 'max-w-6xl',
+};
+
+export const gridMarginTopClasses: Record<ScreenHeight, string> = {
+    xs: '-mt-22',
+    sm: '-mt-22',
+    md: '-mt-22',
+    lg: '-mt-26',
+    xl: '-mt-40',
+};
+
+export const cardHeightClasses: Record<ScreenHeight, string> = {
+    xs: 'h-17',
+    sm: 'h-17',
+    md: 'h-24',
+    lg: 'h-24',
+    xl: 'h-24',
+};
+
+export const cardMarginTopClasses: Record<
+    ScreenHeight,
+    Record<CardSpreadStyle, string>
+> = {
+    xs: {
+        base: 'mt-10',
+        none: 'mt-17',
+        sm: 'mt-15',
+        md: 'mt-10',
+    },
+    sm: {
+        base: 'mt-10',
+        none: 'mt-17',
+        sm: 'mt-15',
+        md: 'mt-10',
+    },
+    md: {
         base: 'mt-16',
         none: 'mt-24',
         sm: 'mt-22',
         md: 'mt-16',
-    };
+    },
+    lg: {
+        base: 'mt-16',
+        none: 'mt-24',
+        sm: 'mt-22',
+        md: 'mt-16',
+    },
+    xl: {
+        base: 'mt-16',
+        none: 'mt-24',
+        sm: 'mt-22',
+        md: 'mt-16',
+    },
+};
 
-export const spreadStylePileHeightClasses: Record<SpreadStyle, string> = {
-    none: 'h-54',
-    sm: 'h-54',
-    md: 'h-76',
+export const draggedCardMarginTop: Record<
+    ScreenHeight,
+    Record<CardSpreadStyle, string>
+> = {
+    xs: {
+        base: '-2.5rem',
+        none: '-4.25rem',
+        sm: '-3.75rem',
+        md: '-2.5rem',
+    },
+    sm: {
+        base: '-2.5rem',
+        none: '-4.25rem',
+        sm: '-3.75rem',
+        md: '-2.5rem',
+    },
+    md: {
+        base: '-4rem',
+        none: '-6rem',
+        sm: '-5.5rem',
+        md: '-4rem',
+    },
+    lg: {
+        base: '-4rem',
+        none: '-6rem',
+        sm: '-5.5rem',
+        md: '-4rem',
+    },
+    xl: {
+        base: '-4rem',
+        none: '-6rem',
+        sm: '-5.5rem',
+        md: '-4rem',
+    },
+};
+
+export const pileHeightClasses: Record<
+    ScreenHeight,
+    Record<SpreadStyle, string>
+> = {
+    xs: {
+        none: 'h-52',
+        sm: 'h-52',
+        md: 'h-73',
+    },
+    sm: {
+        none: 'h-52',
+        sm: 'h-52',
+        md: 'h-73',
+    },
+    md: {
+        none: 'h-54',
+        sm: 'h-54',
+        md: 'h-76',
+    },
+    lg: {
+        none: 'h-54',
+        sm: 'h-54',
+        md: 'h-80',
+    },
+    xl: {
+        none: 'h-54',
+        sm: 'h-54',
+        md: 'h-96',
+    },
 };
 
 export const gridGapXClass: Record<ScreenWidth, string> = {
@@ -88,7 +201,8 @@ export const gridGapXClass: Record<ScreenWidth, string> = {
 };
 
 export const gridGapYClass: Record<ScreenHeight, string> = {
-    sm: 'gap-y-4',
+    xs: 'gap-y-4',
+    sm: 'gap-y-6',
     md: 'gap-y-8',
     lg: 'gap-y-12',
     xl: 'gap-y-16',

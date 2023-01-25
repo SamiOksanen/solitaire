@@ -47,7 +47,7 @@ const Card = ({
 
     return (
         <div
-            className={`relative h-24 ${additionalStyleClass} bg-slate-50 border-solid border rounded-md border-slate-700 ${color}`}
+            className={`relative ${additionalStyleClass} bg-slate-50 border-solid border rounded-md border-slate-700 ${color}`}
             onClick={() => handleClick && handleClick()}
         >
             {content}

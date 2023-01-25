@@ -9,6 +9,8 @@ import {
     getCards,
     gridGapXClass,
     gridGapYClass,
+    gridMarginTopClasses,
+    gridMaxWidthClasses,
     handleCardMovementEnd,
     handleCardMovementStart,
     handleStockPileClick,
@@ -89,67 +91,80 @@ const Klondike = () => {
         >
             <div
                 id="cards"
-                className={`cards items-end max-w-6xl mx-auto -mt-22 px-2 grid grid-rows-2 grid-cols-7 ${gridGapYClass[screenHeight]} ${gridGapXClass[screenWidth]}`}
+                className={`cards items-end ${gridMaxWidthClasses[screenHeight]} mx-auto ${gridMarginTopClasses[screenHeight]} px-2 grid grid-rows-2 grid-cols-7 ${gridGapYClass[screenHeight]} ${gridGapXClass[screenWidth]}`}
             >
                 <Stack
                     id={1}
                     cards={cards.filter((c) => c.boardPosition === 1)}
+                    screenHeight={screenHeight}
                     spreadStyle="sm"
                     handleCardClick={() => handleStockPileCardClick()}
                 ></Stack>
                 <Stack
                     id={2}
                     cards={cards.filter((c) => c.boardPosition === 2)}
+                    screenHeight={screenHeight}
                     spreadStyle="none"
                 ></Stack>
                 <div></div>
                 <Stack
                     id={3}
                     cards={cards.filter((c) => c.boardPosition === 3)}
+                    screenHeight={screenHeight}
                     spreadStyle="sm"
                 ></Stack>
                 <Stack
                     id={4}
                     cards={cards.filter((c) => c.boardPosition === 4)}
+                    screenHeight={screenHeight}
                     spreadStyle="sm"
                 ></Stack>
                 <Stack
                     id={5}
                     cards={cards.filter((c) => c.boardPosition === 5)}
+                    screenHeight={screenHeight}
                     spreadStyle="sm"
                 ></Stack>
                 <Stack
                     id={6}
                     cards={cards.filter((c) => c.boardPosition === 6)}
+                    screenHeight={screenHeight}
                     spreadStyle="sm"
                 ></Stack>
                 <Stack
                     id={7}
                     cards={cards.filter((c) => c.boardPosition === 7)}
+                    screenHeight={screenHeight}
                 ></Stack>
                 <Stack
                     id={8}
                     cards={cards.filter((c) => c.boardPosition === 8)}
+                    screenHeight={screenHeight}
                 ></Stack>
                 <Stack
                     id={9}
                     cards={cards.filter((c) => c.boardPosition === 9)}
+                    screenHeight={screenHeight}
                 ></Stack>
                 <Stack
                     id={10}
                     cards={cards.filter((c) => c.boardPosition === 10)}
+                    screenHeight={screenHeight}
                 ></Stack>
                 <Stack
                     id={11}
                     cards={cards.filter((c) => c.boardPosition === 11)}
+                    screenHeight={screenHeight}
                 ></Stack>
                 <Stack
                     id={12}
                     cards={cards.filter((c) => c.boardPosition === 12)}
+                    screenHeight={screenHeight}
                 ></Stack>
                 <Stack
                     id={13}
                     cards={cards.filter((c) => c.boardPosition === 13)}
+                    screenHeight={screenHeight}
                 ></Stack>
             </div>
             <AlertModal

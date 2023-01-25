@@ -1,11 +1,14 @@
 import { CSSProperties } from 'react';
 import {
+    cardHeightClasses,
     CardInGame,
+    cardMarginTopClasses,
+    pileHeightClasses,
     SpreadStyle,
-    spreadStylePileHeightClasses,
 } from 'src/utils/cards.util';
 import { StrictModeDroppable } from 'src/components/StrictModeDroppable';
 import StackCards from './StackCards';
+import { ScreenHeight } from '@/utils/hooks/useScreenHeight';
 
 const getTargetedStyle = (isTargetet: boolean): CSSProperties => ({
     background: isTargetet
@@ -16,6 +19,7 @@ const getTargetedStyle = (isTargetet: boolean): CSSProperties => ({
 type StackProps = {
     id: number;
     cards: CardInGame[];
+    screenHeight: ScreenHeight;
     spreadStyle?: SpreadStyle;
     handleCardClick?: () => void;
 };
@@ -23,6 +27,7 @@ type StackProps = {
 const Stack = ({
     id,
     cards,
+    screenHeight,
     spreadStyle = 'md',
     handleCardClick,
 }: StackProps) => {
@@ -30,14 +35,16 @@ const Stack = ({
         <StrictModeDroppable droppableId={`${id}`}>
             {(provided, snapshot) => (
                 <div
-                    className={`relative mt-16 ${spreadStylePileHeightClasses[spreadStyle]} rounded-md`}
+                    className={`relative ${cardMarginTopClasses[screenHeight].base} ${pileHeightClasses[screenHeight][spreadStyle]} rounded-md`}
                     ref={provided.innerRef}
                     {...provided.droppableProps}
                     style={getTargetedStyle(snapshot.isDraggingOver)}
                     {...provided.droppableProps}
                 >
                     <div
-                        className={`absolute w-full -mt-16 h-24 ${
+                        className={`absolute w-full -${
+                            cardMarginTopClasses[screenHeight].base
+                        } ${cardHeightClasses[screenHeight]} ${
                             handleCardClick ? ' cursor-pointer' : ''
                         } p-0.5 mb-2 mr-2 rounded-lg group bg-gradient-to-br from-red-200 via-red-300 to-yellow-200`}
                         onClick={handleCardClick}
@@ -49,6 +56,7 @@ const Stack = ({
                     </div>
                     <StackCards
                         cards={cards}
+                        screenHeight={screenHeight}
                         spreadStyle={spreadStyle}
                         handleCardClick={handleCardClick}
                     />

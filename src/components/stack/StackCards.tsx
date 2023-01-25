@@ -1,7 +1,9 @@
 import {
+    cardHeightClasses,
     CardInGame,
+    cardMarginTopClasses,
     CardSpreadStyle,
-    cardSpreadStyleMarginTopClasses,
+    draggedCardMarginTop,
     SpreadStyle,
 } from 'src/utils/cards.util';
 import { CSSProperties } from 'react';
@@ -11,10 +13,12 @@ import {
     NotDraggingStyle,
 } from 'react-beautiful-dnd';
 import Card from 'src/components/Card';
+import { ScreenHeight } from '@/utils/hooks/useScreenHeight';
 
 type StackCardsProps = {
     cards: CardInGame[];
-    spreadStyle?: SpreadStyle;
+    screenHeight: ScreenHeight;
+    spreadStyle: SpreadStyle;
     handleCardClick?: () => void;
 };
 
@@ -22,19 +26,14 @@ const getDraggedItemStyle = (
     isDragged: boolean,
     isDropAnimating: boolean,
     draggableStyle: DraggingStyle | NotDraggingStyle | undefined,
+    screenHeight: ScreenHeight,
     spreadStyle: CardSpreadStyle
 ): CSSProperties => {
     let marginTop: string;
     if (isDropAnimating) {
-        marginTop = '-4rem';
-    } else if (spreadStyle === 'base') {
-        marginTop = '-4rem';
-    } else if (spreadStyle === 'none') {
-        marginTop = '-6rem';
-    } else if (spreadStyle === 'sm') {
-        marginTop = '-5.5rem';
+        marginTop = draggedCardMarginTop[screenHeight].base;
     } else {
-        marginTop = '-4rem';
+        marginTop = draggedCardMarginTop[screenHeight][spreadStyle];
     }
     return {
         userSelect: 'none',
@@ -46,7 +45,8 @@ const getDraggedItemStyle = (
 
 const StackCards = ({
     cards,
-    spreadStyle = 'md',
+    screenHeight,
+    spreadStyle,
     handleCardClick,
 }: StackCardsProps) => {
     const stackCards = cards.sort((a, b) => a.stackPosition - b.stackPosition);
@@ -85,6 +85,7 @@ const StackCards = ({
                                                 snapshot.isDragging,
                                                 snapshot.isDropAnimating,
                                                 provided.draggableProps.style,
+                                                screenHeight,
                                                 cardSpreadStyle
                                             )}
                                         >
@@ -101,13 +102,17 @@ const StackCards = ({
                                                             revealed={
                                                                 c2.revealed
                                                             }
-                                                            additionalStyleClass={
+                                                            additionalStyleClass={`${
+                                                                cardHeightClasses[
+                                                                    screenHeight
+                                                                ]
+                                                            } ${
                                                                 c.isBeingDragged &&
                                                                 c2.isPartOfDragging &&
                                                                 ix2 > index
-                                                                    ? `-${cardSpreadStyleMarginTopClasses[spreadStyle]}`
+                                                                    ? `-${cardMarginTopClasses[screenHeight][spreadStyle]}`
                                                                     : ''
-                                                            }
+                                                            }`}
                                                             handleClick={
                                                                 handleCardClick
                                                             }
