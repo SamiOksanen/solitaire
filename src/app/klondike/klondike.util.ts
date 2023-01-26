@@ -9,6 +9,7 @@ import {
 
 const blockedSources = [1];
 const blockedDestinations = [1, 2];
+const singleCardSource = [2];
 const foundations = [3, 4, 5, 6];
 
 export const isAllowedMove = (
@@ -36,16 +37,26 @@ export const isAllowedMove = (
     let firstDraggedCard: CardInGame | undefined;
     let lastDestinationCard: CardInGame | undefined;
     cards.forEach((c) => {
-        if (
-            c.boardPosition === source &&
-            c.stackPosition === result.source.index
-        ) {
-            if (!c.revealed) {
-                openModal('Cannot move card faced down!');
-                isAllowed = false;
-                return;
+        if (c.boardPosition === source) {
+            if (c.stackPosition === result.source.index) {
+                if (!c.revealed) {
+                    openModal('Cannot move card faced down!');
+                    isAllowed = false;
+                    return;
+                }
+                firstDraggedCard = c;
+            } else {
+                if (
+                    singleCardSource.includes(source) &&
+                    c.stackPosition > result.source.index
+                ) {
+                    openModal(
+                        'Only one card at a time is allowed to be moved from this pile!'
+                    );
+                    isAllowed = false;
+                    return;
+                }
             }
-            firstDraggedCard = c;
         }
         if (
             c.boardPosition === destination &&

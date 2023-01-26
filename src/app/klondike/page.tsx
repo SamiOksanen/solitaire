@@ -104,7 +104,7 @@ const Klondike = () => {
                     id={2}
                     cards={cards.filter((c) => c.boardPosition === 2)}
                     screenHeight={screenHeight}
-                    spreadStyle="none"
+                    spreadStyle="sm"
                 ></Stack>
                 <div></div>
                 <Stack
