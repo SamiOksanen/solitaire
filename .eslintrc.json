@@ -3,7 +3,8 @@
     "parserOptions": {
         "project": "tsconfig.json"
     },
-    "plugins": ["@typescript-eslint", "prettier", "no-relative-import-paths"],
+    "plugins": ["@typescript-eslint", "prettier", "no-relative-import-paths", "import"],
+
     "extends": [
         "next/core-web-vitals",
         "eslint:recommended",
@@ -12,12 +13,19 @@
         "plugin:prettier/recommended"
     ],
     "rules": {
-        "prettier/prettier": "warn",
+        "prettier/prettier": ["error", { "semi": false }],
         "@typescript-eslint/require-await": "off",
         "no-relative-import-paths/no-relative-import-paths": [
-            "warn",
-            { "allowSameFolder": true }
-        ]
+            "error",
+            { "allowSameFolder": false }
+        ],
+        "import/order": ["error", {
+            "groups": ["builtin", "external", "internal", "parent", "sibling", "index"],
+            "newlines-between": "never"
+          }],
+        "no-restricted-imports": ["error", {
+            "patterns": [".*", "..*", "@*"]
+        }]
     },
     "ignorePatterns": ["tailwind.config.js"]
 }

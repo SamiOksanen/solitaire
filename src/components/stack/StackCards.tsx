@@ -1,3 +1,6 @@
+import { CSSProperties } from 'react'
+import { Draggable, DraggingStyle, NotDraggingStyle } from 'react-beautiful-dnd'
+import { ScreenHeight } from 'src/utils/hooks/useScreenHeight'
 import {
     cardHeightClasses,
     CardInGame,
@@ -5,22 +8,15 @@ import {
     CardSpreadStyle,
     draggedCardMarginTop,
     SpreadStyle,
-} from 'src/utils/cards.util';
-import { CSSProperties } from 'react';
-import {
-    Draggable,
-    DraggingStyle,
-    NotDraggingStyle,
-} from 'react-beautiful-dnd';
-import Card from 'src/components/Card';
-import { ScreenHeight } from '@/utils/hooks/useScreenHeight';
+} from 'src/utils/cards.util'
+import Card from 'src/components/Card'
 
 type StackCardsProps = {
-    cards: CardInGame[];
-    screenHeight: ScreenHeight;
-    spreadStyle: SpreadStyle;
-    handleCardClick?: () => void;
-};
+    cards: CardInGame[]
+    screenHeight: ScreenHeight
+    spreadStyle: SpreadStyle
+    handleCardClick?: () => void
+}
 
 const getDraggedItemStyle = (
     isDragged: boolean,
@@ -29,19 +25,19 @@ const getDraggedItemStyle = (
     screenHeight: ScreenHeight,
     spreadStyle: CardSpreadStyle
 ): CSSProperties => {
-    let marginTop: string;
+    let marginTop: string
     if (isDropAnimating) {
-        marginTop = draggedCardMarginTop[screenHeight].base;
+        marginTop = draggedCardMarginTop[screenHeight].base
     } else {
-        marginTop = draggedCardMarginTop[screenHeight][spreadStyle];
+        marginTop = draggedCardMarginTop[screenHeight][spreadStyle]
     }
     return {
         userSelect: 'none',
         marginTop,
         filter: isDragged ? 'drop-shadow(.1rem .25rem .25rem #475569)' : 'none',
         ...draggableStyle,
-    };
-};
+    }
+}
 
 const StackCards = ({
     cards,
@@ -49,7 +45,7 @@ const StackCards = ({
     spreadStyle,
     handleCardClick,
 }: StackCardsProps) => {
-    const stackCards = cards.sort((a, b) => a.stackPosition - b.stackPosition);
+    const stackCards = cards.sort((a, b) => a.stackPosition - b.stackPosition)
     return (
         <>
             {stackCards.length > 0 &&
@@ -59,12 +55,11 @@ const StackCards = ({
                             <Draggable
                                 key={`${c.suit}${c.rank}`}
                                 draggableId={`${c.suit}${c.rank}`}
-                                index={index}
-                            >
+                                index={index}>
                                 {(provided, snapshot) => {
-                                    let cardSpreadStyle: CardSpreadStyle;
+                                    let cardSpreadStyle: CardSpreadStyle
                                     if (index === 0) {
-                                        cardSpreadStyle = 'base';
+                                        cardSpreadStyle = 'base'
                                     } else if (
                                         (!c.revealed ||
                                             (index !== 0 &&
@@ -72,9 +67,9 @@ const StackCards = ({
                                                     .revealed)) &&
                                         spreadStyle === 'md'
                                     ) {
-                                        cardSpreadStyle = 'sm';
+                                        cardSpreadStyle = 'sm'
                                     } else {
-                                        cardSpreadStyle = spreadStyle;
+                                        cardSpreadStyle = spreadStyle
                                     }
                                     return (
                                         <div
@@ -87,8 +82,7 @@ const StackCards = ({
                                                 provided.draggableProps.style,
                                                 screenHeight,
                                                 cardSpreadStyle
-                                            )}
-                                        >
+                                            )}>
                                             {stackCards.map((c2, ix2) => {
                                                 return (
                                                     (ix2 === index ||
@@ -118,16 +112,16 @@ const StackCards = ({
                                                             }
                                                         />
                                                     )
-                                                );
+                                                )
                                             })}
                                         </div>
-                                    );
+                                    )
                                 }}
                             </Draggable>
                         )
                 )}
         </>
-    );
-};
+    )
+}
 
-export default StackCards;
+export default StackCards

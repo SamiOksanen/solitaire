@@ -1,80 +1,80 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from '@playwright/test'
 
 test.describe('Klondike solitaire page', () => {
     test.beforeEach(async ({ page }, testInfo) => {
-        console.log(`Running ${testInfo.title}`);
-        await page.goto('http://localhost:3000/klondike/');
-    });
+        console.log(`Running ${testInfo.title}`)
+        await page.goto('http://localhost:3000/klondike/')
+    })
 
     test('should have tableau piles dealt correctly', async ({ page }) => {
         await expect(
             page.locator('div[data-rbd-droppable-id="7"]')
-        ).toBeVisible();
+        ).toBeVisible()
         await expect(
             page.locator('div[data-rbd-droppable-id="7"] > div')
-        ).toHaveCount(2);
+        ).toHaveCount(2)
 
         await expect(
             page.locator('div[data-rbd-droppable-id="8"]')
-        ).toBeVisible();
+        ).toBeVisible()
         await expect(
             page.locator('div[data-rbd-droppable-id="8"] > div')
-        ).toHaveCount(3);
+        ).toHaveCount(3)
 
         await expect(
             page.locator('div[data-rbd-droppable-id="9"]')
-        ).toBeVisible();
+        ).toBeVisible()
         await expect(
             page.locator('div[data-rbd-droppable-id="9"] > div')
-        ).toHaveCount(4);
+        ).toHaveCount(4)
 
         await expect(
             page.locator('div[data-rbd-droppable-id="10"]')
-        ).toBeVisible();
+        ).toBeVisible()
         await expect(
             page.locator('div[data-rbd-droppable-id="10"] > div')
-        ).toHaveCount(5);
+        ).toHaveCount(5)
 
         await expect(
             page.locator('div[data-rbd-droppable-id="11"]')
-        ).toBeVisible();
+        ).toBeVisible()
         await expect(
             page.locator('div[data-rbd-droppable-id="11"] > div')
-        ).toHaveCount(6);
+        ).toHaveCount(6)
 
         await expect(
             page.locator('div[data-rbd-droppable-id="12"]')
-        ).toBeVisible();
+        ).toBeVisible()
         await expect(
             page.locator('div[data-rbd-droppable-id="12"] > div')
-        ).toHaveCount(7);
+        ).toHaveCount(7)
 
         await expect(
             page.locator('div[data-rbd-droppable-id="13"]')
-        ).toBeVisible();
+        ).toBeVisible()
         await expect(
             page.locator('div[data-rbd-droppable-id="13"] > div')
-        ).toHaveCount(8);
-    });
+        ).toHaveCount(8)
+    })
 
     test('should move cards from stock pile to waste pile when clicked', async ({
         page,
     }) => {
         await expect(
             page.locator('div[data-rbd-droppable-id="1"]')
-        ).toBeVisible();
+        ).toBeVisible()
         await expect(
             page.locator('div[data-rbd-droppable-id="1"] > div')
-        ).toHaveCount(25);
+        ).toHaveCount(25)
         await expect(
             page.locator('div[data-rbd-droppable-id="2"]')
-        ).toBeVisible();
+        ).toBeVisible()
         await expect(
             page.locator('div[data-rbd-droppable-id="2"] > div')
-        ).toHaveCount(1);
-        await page.click('div[data-rbd-droppable-id="1"] > div:last-child');
+        ).toHaveCount(1)
+        await page.click('div[data-rbd-droppable-id="1"] > div:last-child')
         await expect(
             page.locator('div[data-rbd-droppable-id="2"] > div')
-        ).toHaveCount(4);
-    });
-});
+        ).toHaveCount(4)
+    })
+})

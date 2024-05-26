@@ -1,42 +1,42 @@
-import { DragStart, DropResult } from 'react-beautiful-dnd';
-import { ScreenHeight } from 'src/utils/hooks/useScreenHeight';
-import { ScreenWidth } from 'src/utils/hooks/useScreenWidth';
+import { DragStart, DropResult } from 'react-beautiful-dnd'
+import { ScreenHeight } from 'src/utils/hooks/useScreenHeight'
+import { ScreenWidth } from 'src/utils/hooks/useScreenWidth'
 
 type Enumerate<
     N extends number,
-    Acc extends number[] = []
+    Acc extends number[] = [],
 > = Acc['length'] extends N
     ? Acc[number]
-    : Enumerate<N, [...Acc, Acc['length']]>;
+    : Enumerate<N, [...Acc, Acc['length']]>
 
 export type IntRange<F extends number, T extends number> = Exclude<
     Enumerate<T>,
     Enumerate<F>
->;
+>
 
-export type SpreadStyle = 'none' | 'sm' | 'md';
+export type SpreadStyle = 'none' | 'sm' | 'md'
 
-export type CardSpreadStyle = 'base' | SpreadStyle;
+export type CardSpreadStyle = 'base' | SpreadStyle
 
-export type Suit = 'clubs' | 'diamonds' | 'hearts' | 'spades';
+export type Suit = 'clubs' | 'diamonds' | 'hearts' | 'spades'
 
 export interface Card {
-    suit: Suit;
-    rank: IntRange<1, 14>;
+    suit: Suit
+    rank: IntRange<1, 14>
 }
 
 export interface CardPosition {
-    boardPosition: number;
-    stackPosition: number;
-    revealed?: boolean;
+    boardPosition: number
+    stackPosition: number
+    revealed?: boolean
 }
 
 export interface CardInGame extends Card, CardPosition {
-    isBeingDragged?: boolean;
-    isPartOfDragging?: boolean;
+    isBeingDragged?: boolean
+    isPartOfDragging?: boolean
 }
 
-const suits: Suit[] = ['clubs', 'diamonds', 'hearts', 'spades'];
+const suits: Suit[] = ['clubs', 'diamonds', 'hearts', 'spades']
 
 const deckOfCards: Card[] = suits
     .map((suit) =>
@@ -45,27 +45,27 @@ const deckOfCards: Card[] = suits
             rank: rank as IntRange<1, 14>,
         }))
     )
-    .flat();
+    .flat()
 
 const shuffle = (array: Card[]) => {
     let currentIndex = array.length,
-        randomIndex;
+        randomIndex
 
     // While there remain elements to shuffle.
     while (currentIndex != 0) {
         // Pick a remaining element.
-        randomIndex = Math.floor(Math.random() * currentIndex);
-        currentIndex--;
+        randomIndex = Math.floor(Math.random() * currentIndex)
+        currentIndex--
 
         // And swap it with the current element.
-        [array[currentIndex], array[randomIndex]] = [
+        ;[array[currentIndex], array[randomIndex]] = [
             array[randomIndex],
             array[currentIndex],
-        ];
+        ]
     }
 
-    return array;
-};
+    return array
+}
 
 export const gridMaxWidthClasses: Record<ScreenHeight, string> = {
     xs: 'max-w-4xl',
@@ -73,7 +73,7 @@ export const gridMaxWidthClasses: Record<ScreenHeight, string> = {
     md: 'max-w-6xl',
     lg: 'max-w-6xl',
     xl: 'max-w-6xl',
-};
+}
 
 export const gridMarginTopClasses: Record<ScreenHeight, string> = {
     xs: '-mt-22',
@@ -81,7 +81,7 @@ export const gridMarginTopClasses: Record<ScreenHeight, string> = {
     md: '-mt-22',
     lg: '-mt-26',
     xl: '-mt-40',
-};
+}
 
 export const cardHeightClasses: Record<ScreenHeight, string> = {
     xs: 'h-17',
@@ -89,7 +89,7 @@ export const cardHeightClasses: Record<ScreenHeight, string> = {
     md: 'h-24',
     lg: 'h-24',
     xl: 'h-24',
-};
+}
 
 export const cardMarginTopClasses: Record<
     ScreenHeight,
@@ -125,7 +125,7 @@ export const cardMarginTopClasses: Record<
         sm: 'mt-22',
         md: 'mt-16',
     },
-};
+}
 
 export const draggedCardMarginTop: Record<
     ScreenHeight,
@@ -161,7 +161,7 @@ export const draggedCardMarginTop: Record<
         sm: '-5.5rem',
         md: '-4rem',
     },
-};
+}
 
 export const pileHeightClasses: Record<
     ScreenHeight,
@@ -192,13 +192,13 @@ export const pileHeightClasses: Record<
         sm: 'h-54',
         md: 'h-96',
     },
-};
+}
 
 export const gridGapXClass: Record<ScreenWidth, string> = {
     xs: 'gap-x-1',
     sm: 'gap-x-2',
     md: 'gap-x-4',
-};
+}
 
 export const gridGapYClass: Record<ScreenHeight, string> = {
     xs: 'gap-y-4',
@@ -206,14 +206,14 @@ export const gridGapYClass: Record<ScreenHeight, string> = {
     md: 'gap-y-8',
     lg: 'gap-y-12',
     xl: 'gap-y-16',
-};
+}
 
 export const getCards = (numOfDecs = 1): Card[] =>
     shuffle(
         deckOfCards.flatMap(
             (i) => Array.from({ length: numOfDecs }).fill(i) as Card[]
         )
-    );
+    )
 
 export const getMaxStackPosition = (
     boardPositionId: number,
@@ -223,73 +223,73 @@ export const getMaxStackPosition = (
         ...cards.map((c) =>
             c.boardPosition === boardPositionId ? c.stackPosition : -1
         )
-    );
+    )
 
 export const handleCardMovementStart = (
     start: DragStart,
     cards: CardInGame[]
 ): CardInGame[] => {
-    const items = Array.from(cards);
+    const items = Array.from(cards)
     const sourceCards = items.filter(
         (c) => c.boardPosition === Number(start.source.droppableId)
-    );
+    )
     sourceCards.forEach((c) => {
         if (c.stackPosition > start.source.index) {
-            c.isPartOfDragging = true;
+            c.isPartOfDragging = true
         } else {
             if (c.stackPosition === start.source.index) {
-                c.isBeingDragged = true;
+                c.isBeingDragged = true
             }
         }
-    });
-    return items;
-};
+    })
+    return items
+}
 
 export const handleCardMovementEnd = (
     result: DropResult,
     cards: CardInGame[],
     isAllowed: boolean
 ): CardInGame[] => {
-    const items = Array.from(cards);
+    const items = Array.from(cards)
     const sourceCards = items.filter(
         (c) => c.boardPosition === Number(result.source.droppableId)
-    );
+    )
     if (isAllowed) {
         const destinationMaxPosition = getMaxStackPosition(
             Number(result.destination?.droppableId),
             cards
-        );
+        )
 
         sourceCards.forEach((c) => {
             if (c.stackPosition >= result.source.index) {
-                c.boardPosition = Number(result.destination?.droppableId);
+                c.boardPosition = Number(result.destination?.droppableId)
                 c.stackPosition =
                     destinationMaxPosition +
                     c.stackPosition -
                     result.source.index +
-                    1;
-                c.isBeingDragged = false;
-                c.isPartOfDragging = false;
+                    1
+                c.isBeingDragged = false
+                c.isPartOfDragging = false
             } else {
                 if (
                     c.stackPosition === result.source.index - 1 &&
                     !c.revealed
                 ) {
-                    c.revealed = true;
+                    c.revealed = true
                 }
             }
-        });
+        })
     } else {
         sourceCards.forEach((c) => {
             if (c.stackPosition >= result.source.index) {
-                c.isBeingDragged = false;
-                c.isPartOfDragging = false;
+                c.isBeingDragged = false
+                c.isPartOfDragging = false
             }
-        });
+        })
     }
 
-    return items;
-};
+    return items
+}
 
 export const handleStockPileClick = (
     cards: CardInGame[],
@@ -297,32 +297,32 @@ export const handleStockPileClick = (
     wastePilePosition = 2,
     cardsToWastePile = 3
 ) => {
-    const items = Array.from(cards);
-    const stockMaxPos = getMaxStackPosition(stockPilePosition, cards);
-    const wasteMaxPos = getMaxStackPosition(wastePilePosition, cards);
+    const items = Array.from(cards)
+    const stockMaxPos = getMaxStackPosition(stockPilePosition, cards)
+    const wasteMaxPos = getMaxStackPosition(wastePilePosition, cards)
     if (stockMaxPos === -1) {
         if (wasteMaxPos !== -1) {
             const wastePileCards = items.filter(
                 (c) => c.boardPosition === wastePilePosition
-            );
+            )
             wastePileCards.forEach((c) => {
-                c.boardPosition = stockPilePosition;
-                c.stackPosition = wasteMaxPos - c.stackPosition;
-                c.revealed = false;
-            });
+                c.boardPosition = stockPilePosition
+                c.stackPosition = wasteMaxPos - c.stackPosition
+                c.revealed = false
+            })
         }
     } else {
         const stockPileCards = items.filter(
             (c) => c.boardPosition === stockPilePosition
-        );
+        )
         stockPileCards.forEach((c) => {
             if (c.stackPosition + cardsToWastePile > stockMaxPos) {
-                c.boardPosition = wastePilePosition;
+                c.boardPosition = wastePilePosition
                 c.stackPosition =
-                    wasteMaxPos + stockMaxPos - c.stackPosition + 1;
-                c.revealed = true;
+                    wasteMaxPos + stockMaxPos - c.stackPosition + 1
+                c.revealed = true
             }
-        });
+        })
     }
-    return items;
-};
+    return items
+}
