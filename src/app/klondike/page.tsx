@@ -18,8 +18,13 @@ import {
 import Stack from 'src/components/stack/Stack'
 import useScreenHeight from 'src/utils/hooks/useScreenHeight'
 import useScreenWidth from 'src/utils/hooks/useScreenWidth'
-import { isAllowedMove, isCompleted } from 'src/app/klondike/klondike.util'
-import AlertModal from 'src/components/AlertModal'
+import {
+    hasValidMovesLeft,
+    isAllowedMove,
+    isCompleted,
+} from 'src/app/klondike/klondike.util'
+import AlertModal from 'src/components/modal/AlertModal'
+import RetryModal from 'src/components/modal/RetryModal'
 
 const cardPositionSetup: CardPosition[] = Array.from(new Array(7), (_, i) => i)
     .map((_, i) =>
@@ -44,8 +49,10 @@ const getSetup = (): CardInGame[] =>
 
 const Klondike = () => {
     const [cards, setCards] = useState(getSetup())
-    const [modalIsOpen, setIsOpen] = useState(false)
-    const [modalContent, setModalContent] = useState('')
+    const [alertModalIsOpen, setAlertModalIsOpen] = useState(false)
+    const [alertModalContent, setAlertModalContent] = useState('')
+    const [retryModalIsOpen, setRetryModalIsOpen] = useState(false)
+    const [retryModalContent, setRetryModalContent] = useState('')
     const [completed, setCompleted] = useState(false)
 
     const screenHeight = useScreenHeight()
@@ -60,7 +67,7 @@ const Klondike = () => {
             handleCardMovementEnd(
                 result,
                 cards,
-                isAllowedMove(result, cards, openModal)
+                isAllowedMove(result, cards, openAlertModal)
             )
         )
     }
@@ -68,6 +75,15 @@ const Klondike = () => {
     useEffect(() => {
         if (isCompleted(cards)) {
             setCompleted(true)
+            setRetryModalContent(
+                'Congratulations! You have completed the game!'
+            )
+            setRetryModalIsOpen(true)
+        } else {
+            if (!hasValidMovesLeft(cards)) {
+                setRetryModalContent('No more moves left!')
+                setRetryModalIsOpen(true)
+            }
         }
     }, [cards])
 
@@ -75,13 +91,9 @@ const Klondike = () => {
         setCards(handleStockPileClick(cards))
     }
 
-    const openModal = (content: string) => {
-        setModalContent(content)
-        setIsOpen(true)
-    }
-
-    const closeModal = () => {
-        setIsOpen(false)
+    const openAlertModal = (content: string) => {
+        setAlertModalContent(content)
+        setAlertModalIsOpen(true)
     }
 
     return (
@@ -153,9 +165,15 @@ const Klondike = () => {
                     screenHeight={screenHeight}></Stack>
             </div>
             <AlertModal
-                isOpen={modalIsOpen}
-                close={closeModal}
-                content={modalContent}
+                isOpen={alertModalIsOpen}
+                close={() => setAlertModalIsOpen(false)}
+                content={alertModalContent}
+            />
+            <RetryModal
+                isOpen={retryModalIsOpen}
+                close={() => setRetryModalIsOpen(false)}
+                content={retryModalContent}
+                success={completed}
             />
             {completed && <Confetti />}
         </DragDropContext>

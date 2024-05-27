@@ -13,8 +13,8 @@ const Header = ({ title, hasBackLink }: HeaderProps) => (
                 href={'/'}
                 passHref
                 replace
-                className="relative inline-flex items-center justify-center p-0.5 mb-2 ml-2 max-w-fit overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-red-200 via-red-300 to-yellow-200 group-hover:from-red-200 group-hover:via-red-300 group-hover:to-yellow-200 dark:text-white dark:hover:text-gray-900 focus:ring-4 focus:outline-none focus:ring-red-100 dark:focus:ring-red-400 mt-2">
-                <div className="relative inline-flex items-center justify-center px-5 py-2.5 w-full h-full transition-all ease-in duration-75 bg-green-800 rounded-md group-hover:bg-opacity-0">
+                className="relative inline-flex items-center justify-center p-0.5 mb-2 ml-2 max-w-fit overflow-hidden text-sm font-medium rounded-lg group bg-gradient-to-br from-red-200 via-red-300 to-yellow-200 group-hover:from-red-200 group-hover:via-red-300 group-hover:to-yellow-200 text-white hover:text-gray-900 focus:ring-4 focus:outline-none focus:ring-red-400 mt-2">
+                <div className="relative inline-flex items-center justify-center px-5 py-2.5 w-full h-full transition-all ease-in duration-75 bg-green-700 rounded-md group-hover:bg-opacity-0">
                     <svg
                         aria-hidden="true"
                         className="w-5 h-5 mr-2"

@@ -17,12 +17,9 @@ export const isAllowedMove = (
     cards: CardInGame[],
     openModal: (content: string) => void
 ): boolean => {
-    if (!result.destination) {
-        return false
-    }
     const source = Number(result.source.droppableId)
-    const destination = Number(result.destination.droppableId)
-    if (source === destination) {
+    const destination = Number(result.destination?.droppableId)
+    if (!result.destination || source === destination) {
         return false
     }
     if (blockedSources.includes(source)) {
@@ -33,16 +30,14 @@ export const isAllowedMove = (
         openModal('Cannot put cards to the stock pile or the waste pile!')
         return false
     }
-    let isAllowed = true
     let firstDraggedCard: CardInGame | undefined
     let lastDestinationCard: CardInGame | undefined
-    cards.forEach((c) => {
+    for (const c of cards) {
         if (c.boardPosition === source) {
             if (c.stackPosition === result.source.index) {
                 if (!c.revealed) {
                     openModal('Cannot move card faced down!')
-                    isAllowed = false
-                    return
+                    return false
                 }
                 firstDraggedCard = c
             } else {
@@ -53,8 +48,7 @@ export const isAllowedMove = (
                     openModal(
                         'Only one card at a time is allowed to be moved from this pile!'
                     )
-                    isAllowed = false
-                    return
+                    return false
                 }
             }
         }
@@ -64,10 +58,6 @@ export const isAllowedMove = (
         ) {
             lastDestinationCard = c
         }
-    })
-
-    if (!isAllowed) {
-        return false
     }
 
     if (firstDraggedCard) {
@@ -120,12 +110,105 @@ export const isAllowedMove = (
     return true
 }
 
-export const isCompleted = (cards: CardInGame[]): boolean => {
-    let completed = true
-    foundations.forEach((f) => {
-        if (cards.filter((c) => c.boardPosition === f).length !== 13) {
-            completed = false
+export const hasValidMovesLeft = (cards: CardInGame[]): boolean => {
+    const stockPileCards = cards
+        .filter((c) => c.boardPosition === 1)
+        .sort((a, b) => b.stackPosition - a.stackPosition)
+    const wastePileCards = cards
+        .filter((c) => c.boardPosition === 2)
+        .sort((a, b) => a.stackPosition - b.stackPosition)
+    const allStockCards = [...wastePileCards, ...stockPileCards]
+    const playableCurrentStockPileCards = stockPileCards.filter(
+        (_, i) => (i + 1) % 3 === 0 || i + 1 === stockPileCards.length
+    )
+    const playableStockCards = [
+        ...allStockCards.filter(
+            (c, i) =>
+                (i + 1) % 3 === 0 ||
+                i + 1 === allStockCards.length ||
+                (c.boardPosition === 2 &&
+                    c.stackPosition ===
+                        getMaxStackPosition(c.boardPosition, cards))
+        ),
+        ...playableCurrentStockPileCards,
+    ]
+    const hasEmptyBoardPositions = [7, 8, 9, 10, 11, 12, 13].some(
+        (p) => !cards.some((c) => c.boardPosition === p)
+    )
+    for (const c of cards) {
+        if (foundations.includes(c.boardPosition)) {
+            continue
         }
-    })
-    return completed
+        const cardBelow = cards.find(
+            (cb) =>
+                c.boardPosition === cb.boardPosition &&
+                c.stackPosition - 1 === cb.stackPosition
+        )
+        const isPlayableStockCard = playableStockCards.some(
+            (sc) =>
+                c.boardPosition === sc.boardPosition &&
+                c.stackPosition === sc.stackPosition
+        )
+        if (
+            isPlayableStockCard ||
+            (c.revealed &&
+                !foundations.includes(c.boardPosition) &&
+                !blockedDestinations.includes(c.boardPosition) &&
+                (c.stackPosition ===
+                    getMaxStackPosition(c.boardPosition, cards) ||
+                    (!cardBelow && c.rank !== 13) ||
+                    (cardBelow && !cardBelow.revealed)))
+        ) {
+            if (c.rank === 1) {
+                return true
+            }
+            if (
+                hasEmptyBoardPositions &&
+                c.rank === 13 &&
+                (cardBelow || isPlayableStockCard)
+            ) {
+                return true
+            }
+            for (const c2 of cards) {
+                if (
+                    c2.revealed &&
+                    c2.stackPosition ===
+                        getMaxStackPosition(c2.boardPosition, cards) &&
+                    !blockedDestinations.includes(c2.boardPosition)
+                ) {
+                    if (foundations.includes(c2.boardPosition)) {
+                        if (
+                            (c.stackPosition ===
+                                getMaxStackPosition(c.boardPosition, cards) ||
+                                isPlayableStockCard) &&
+                            hasSameSuit(c, c2) &&
+                            isOneRankGreater(c, c2)
+                        ) {
+                            return true
+                        }
+                    } else {
+                        if (
+                            ((!cardBelow && c.rank !== 13) ||
+                                (cardBelow && !cardBelow.revealed) ||
+                                isPlayableStockCard) &&
+                            !hasSameSuitColor(c, c2) &&
+                            isOneRankLower(c, c2)
+                        ) {
+                            return true
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return false
+}
+
+export const isCompleted = (cards: CardInGame[]): boolean => {
+    for (const f of foundations) {
+        if (cards.filter((c) => c.boardPosition === f).length !== 13) {
+            return false
+        }
+    }
+    return true
 }
