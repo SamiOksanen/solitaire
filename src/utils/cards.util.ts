@@ -1,6 +1,5 @@
-import { DragStart, DropResult } from 'react-beautiful-dnd'
-import { ScreenHeight } from 'src/utils/hooks/useScreenHeight'
-import { ScreenWidth } from 'src/utils/hooks/useScreenWidth'
+import { DragStart, DropResult } from '@hello-pangea/dnd'
+import { ScreenHeight, ScreenWidth } from 'src/utils/screen.util'
 
 type Enumerate<
     N extends number,
@@ -293,9 +292,9 @@ export const handleCardMovementEnd = (
 
 export const handleStockPileClick = (
     cards: CardInGame[],
+    cardsToWastePile = 3,
     stockPilePosition = 1,
-    wastePilePosition = 2,
-    cardsToWastePile = 3
+    wastePilePosition = 2
 ) => {
     const items = Array.from(cards)
     const stockMaxPos = getMaxStackPosition(stockPilePosition, cards)

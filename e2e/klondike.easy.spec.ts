@@ -1,9 +1,9 @@
 import { test, expect } from '@playwright/test'
 
-test.describe('Klondike solitaire page', () => {
+test.describe('Klondike solitaire easy page', () => {
     test.beforeEach(async ({ page }, testInfo) => {
         console.log(`Running ${testInfo.title}`)
-        await page.goto('http://localhost:3000/klondike/')
+        await page.goto('http://localhost:3000/klondike/easy/')
     })
 
     test('should have tableau piles dealt correctly', async ({ page }) => {
@@ -57,7 +57,7 @@ test.describe('Klondike solitaire page', () => {
         ).toHaveCount(8)
     })
 
-    test('should move cards from stock pile to waste pile when clicked', async ({
+    test('should move a card from stock pile to waste pile when clicked', async ({
         page,
     }) => {
         await expect(
@@ -75,9 +75,9 @@ test.describe('Klondike solitaire page', () => {
         await page.click('div[data-rbd-droppable-id="1"] > div:last-child')
         await expect(
             page.locator('div[data-rbd-droppable-id="1"] > div')
-        ).toHaveCount(22)
+        ).toHaveCount(24)
         await expect(
             page.locator('div[data-rbd-droppable-id="2"] > div')
-        ).toHaveCount(4)
+        ).toHaveCount(2)
     })
 })

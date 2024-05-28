@@ -1,18 +1,5 @@
 import { useEffect, useState } from 'react'
-
-export type ScreenWidth = 'xs' | 'sm' | 'md'
-
-const getScreenWidth = (): ScreenWidth => {
-    if (typeof window !== 'undefined') {
-        if (window.innerWidth <= 480) {
-            return 'xs'
-        }
-        if (window.innerWidth <= 700) {
-            return 'sm'
-        }
-    }
-    return 'md'
-}
+import { ScreenWidth, getScreenWidth } from 'src/utils/screen.util'
 
 const useScreenWidth = () => {
     const [screenWidth, setScreenWidth] = useState<ScreenWidth>('md')

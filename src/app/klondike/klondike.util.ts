@@ -1,5 +1,10 @@
-import { DropResult } from 'react-beautiful-dnd'
-import { CardInGame, getMaxStackPosition } from 'src/utils/cards.util'
+import { DropResult } from '@hello-pangea/dnd'
+import {
+    CardInGame,
+    CardPosition,
+    getCards,
+    getMaxStackPosition,
+} from 'src/utils/cards.util'
 import {
     hasSameSuit,
     hasSameSuitColor,
@@ -12,10 +17,32 @@ const blockedDestinations = [1, 2]
 const singleCardSource = [2]
 const foundations = [3, 4, 5, 6]
 
+const cardPositionSetup: CardPosition[] = Array.from(new Array(7), (_, i) => i)
+    .map((_, i) =>
+        Array.from(new Array(7 - i), (_, i2) => ({
+            boardPosition: i2 + 7 + i,
+            stackPosition: i,
+            revealed: i2 === 0,
+        }))
+    )
+    .flat()
+
+export const getSetup = (): CardInGame[] =>
+    getCards().map((c, i) => {
+        return cardPositionSetup[i]
+            ? { ...c, ...cardPositionSetup[i] }
+            : {
+                  ...c,
+                  boardPosition: 1,
+                  stackPosition: i - cardPositionSetup.length,
+              }
+    })
+
 export const isAllowedMove = (
     result: DropResult,
     cards: CardInGame[],
-    openModal: (content: string) => void
+    openModal: (content: string) => void,
+    easyMode = false
 ): boolean => {
     const source = Number(result.source.droppableId)
     const destination = Number(result.destination?.droppableId)
@@ -85,7 +112,7 @@ export const isAllowedMove = (
             }
         } else {
             if (!lastDestinationCard) {
-                if (firstDraggedCard.rank != 13) {
+                if (firstDraggedCard.rank != 13 && !easyMode) {
                     openModal(
                         'Empty tableau piles can only be started with a King!'
                     )
@@ -110,7 +137,11 @@ export const isAllowedMove = (
     return true
 }
 
-export const hasValidMovesLeft = (cards: CardInGame[]): boolean => {
+export const hasValidMovesLeft = (
+    cards: CardInGame[],
+    cardsFromStockToWaste = 3,
+    easyMode = false
+): boolean => {
     const stockPileCards = cards
         .filter((c) => c.boardPosition === 1)
         .sort((a, b) => b.stackPosition - a.stackPosition)
@@ -119,12 +150,14 @@ export const hasValidMovesLeft = (cards: CardInGame[]): boolean => {
         .sort((a, b) => a.stackPosition - b.stackPosition)
     const allStockCards = [...wastePileCards, ...stockPileCards]
     const playableCurrentStockPileCards = stockPileCards.filter(
-        (_, i) => (i + 1) % 3 === 0 || i + 1 === stockPileCards.length
+        (_, i) =>
+            (i + 1) % cardsFromStockToWaste === 0 ||
+            i + 1 === stockPileCards.length
     )
     const playableStockCards = [
         ...allStockCards.filter(
             (c, i) =>
-                (i + 1) % 3 === 0 ||
+                (i + 1) % cardsFromStockToWaste === 0 ||
                 i + 1 === allStockCards.length ||
                 (c.boardPosition === 2 &&
                     c.stackPosition ===
@@ -156,16 +189,16 @@ export const hasValidMovesLeft = (cards: CardInGame[]): boolean => {
                 !blockedDestinations.includes(c.boardPosition) &&
                 (c.stackPosition ===
                     getMaxStackPosition(c.boardPosition, cards) ||
-                    (!cardBelow && c.rank !== 13) ||
-                    (cardBelow && !cardBelow.revealed)))
+                    (cardBelow && !cardBelow.revealed) ||
+                    (!cardBelow && c.rank !== 13)))
         ) {
             if (c.rank === 1) {
                 return true
             }
             if (
                 hasEmptyBoardPositions &&
-                c.rank === 13 &&
-                (cardBelow || isPlayableStockCard)
+                (c.rank === 13 || easyMode) &&
+                ((cardBelow && !cardBelow.revealed) || isPlayableStockCard)
             ) {
                 return true
             }

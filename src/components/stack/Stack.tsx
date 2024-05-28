@@ -1,5 +1,5 @@
 import { CSSProperties } from 'react'
-import { ScreenHeight } from 'src/utils/hooks/useScreenHeight'
+import { ScreenHeight } from 'src/utils/screen.util'
 import {
     cardHeightClasses,
     CardInGame,

@@ -1,15 +1,14 @@
+import type { Metadata } from 'next'
 import 'src/app/globals.css'
-import Header from 'src/components/Header'
 
-export default function RootLayout({
+export const metadata: Metadata = {
+    title: 'Klondike Solitaire',
+}
+
+export default function KlondikeLayout({
     children,
 }: {
     children: React.ReactNode
 }) {
-    return (
-        <>
-            <Header title="Klondike Solitaire" hasBackLink />
-            <section>{children}</section>
-        </>
-    )
+    return <section>{children}</section>
 }

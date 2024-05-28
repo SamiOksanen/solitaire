@@ -45,7 +45,7 @@ const Klondike = () => {
             handleCardMovementEnd(
                 result,
                 cards,
-                isAllowedMove(result, cards, openAlertModal)
+                isAllowedMove(result, cards, openAlertModal, true)
             )
         )
     }
@@ -58,7 +58,7 @@ const Klondike = () => {
             )
             setRetryModalIsOpen(true)
         } else {
-            if (!hasValidMovesLeft(cards)) {
+            if (!hasValidMovesLeft(cards, 1, true)) {
                 setRetryModalContent('No more moves left!')
                 setRetryModalIsOpen(true)
             }
@@ -66,7 +66,7 @@ const Klondike = () => {
     }, [cards])
 
     const handleStockPileCardClick = () => {
-        setCards(handleStockPileClick(cards))
+        setCards(handleStockPileClick(cards, 1))
     }
 
     const openAlertModal = (content: string) => {
@@ -76,7 +76,7 @@ const Klondike = () => {
 
     return (
         <>
-            <Header title="Klondike Solitaire" hasBackLink />
+            <Header title="Klondike Solitaire (Easy)" hasBackLink />
             <DragDropContext
                 onDragStart={handleOnDragStart}
                 onDragEnd={handleOnDragEnd}>

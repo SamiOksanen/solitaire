@@ -1,6 +1,6 @@
 import Modal from 'react-modal'
 
-type RetryModalProps = {
+type Props = {
     isOpen: boolean
     success: boolean
     content: string
@@ -9,7 +9,7 @@ type RetryModalProps = {
 
 Modal.setAppElement('#main')
 
-const RetryModal = ({ isOpen, success, content, close }: RetryModalProps) => {
+const PlayAgainModal = ({ isOpen, success, content, close }: Props) => {
     return (
         <Modal
             className="fixed z-50 top-1/4 overflow-y-auto overflow-x-hidden justify-center items-center focus:outline-none"
@@ -74,7 +74,7 @@ const RetryModal = ({ isOpen, success, content, close }: RetryModalProps) => {
                         <button
                             data-modal-hide="popup-modal"
                             type="button"
-                            className="inline-flex items-center justify-center p-0.5 mb-2 ml-2 max-w-fit overflow-hidden text-sm font-medium rounded-lg group bg-gradient-to-br from-red-200 via-red-300 to-yellow-200 group-hover:from-red-200 group-hover:via-red-300 group-hover:to-yellow-200 text-white hover:text-gray-900 focus:ring-4 focus:outline-none focus:ring-red-400 mt-2"
+                            className="inline-flex items-center justify-center p-0.5 mb-2 ml-0 max-w-fit overflow-hidden text-sm font-medium rounded-lg group bg-gradient-to-br from-red-200 via-red-300 to-yellow-200 group-hover:from-red-200 group-hover:via-red-300 group-hover:to-yellow-200 text-white hover:text-gray-900 focus:ring-4 focus:outline-none focus:ring-red-400 mt-2"
                             onClick={() => window.location.reload()}>
                             <span className="inline-flex items-center justify-center px-5 py-2.5 w-full h-full transition-all ease-in duration-75 bg-green-700 rounded-md group-hover:bg-opacity-0">
                                 Play again
@@ -96,4 +96,4 @@ const RetryModal = ({ isOpen, success, content, close }: RetryModalProps) => {
     )
 }
 
-export default RetryModal
+export default PlayAgainModal

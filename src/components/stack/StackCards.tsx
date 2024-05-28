@@ -1,6 +1,6 @@
 import { CSSProperties } from 'react'
-import { Draggable, DraggingStyle, NotDraggingStyle } from 'react-beautiful-dnd'
-import { ScreenHeight } from 'src/utils/hooks/useScreenHeight'
+import { Draggable, DraggingStyle, NotDraggingStyle } from '@hello-pangea/dnd'
+import { ScreenHeight } from 'src/utils/screen.util'
 import {
     cardHeightClasses,
     CardInGame,
