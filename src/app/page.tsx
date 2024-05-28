@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 const Solitaire = () => {
     return (
         <div>
-            <Header title="Solitaire" hasBackLink={false}></Header>
+            <Header title="Solitaire" hasBackLink={false} />
             <Link
                 key={'klondike-link'}
                 href={'klondike'}

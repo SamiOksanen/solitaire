@@ -76,7 +76,7 @@ const Klondike = () => {
 
     return (
         <>
-            <Header title="Klondike Solitaire" hasBackLink />
+            <Header title="Klondike Solitaire" hasBackLink hasRestartButton />
             <DragDropContext
                 onDragStart={handleOnDragStart}
                 onDragEnd={handleOnDragEnd}>
