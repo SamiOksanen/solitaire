@@ -1,5 +1,6 @@
-/** @type {import('tailwindcss').Config} */
-module.exports = {
+import type { Config } from 'tailwindcss'
+
+export default {
     content: ['./src/**/*.{js,ts,jsx,tsx}'],
     theme: {
         extend: {
@@ -50,4 +51,4 @@ module.exports = {
         'max-w-4xl',
         'max-w-6xl',
     ],
-}
+} satisfies Config

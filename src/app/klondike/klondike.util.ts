@@ -17,8 +17,8 @@ const blockedDestinations = [1, 2]
 const singleCardSource = [2]
 const foundations = [3, 4, 5, 6]
 
-const cardPositionSetup: CardPosition[] = Array.from(new Array(7), (_, i) => i)
-    .map((_, i) =>
+const cardPositionSetup: CardPosition[] = [...Array(7).keys()]
+    .map((i) =>
         Array.from(new Array(7 - i), (_, i2) => ({
             boardPosition: i2 + 7 + i,
             stackPosition: i,
@@ -30,13 +30,53 @@ const cardPositionSetup: CardPosition[] = Array.from(new Array(7), (_, i) => i)
 export const getSetup = (): CardInGame[] =>
     getCards().map((c, i) => {
         return cardPositionSetup[i]
-            ? { ...c, ...cardPositionSetup[i] }
+            ? {
+                  ...c,
+                  ...cardPositionSetup[i],
+                  id: `${cardPositionSetup[i].boardPosition}_${cardPositionSetup[i].stackPosition}`,
+              }
             : {
                   ...c,
                   boardPosition: 1,
                   stackPosition: i - cardPositionSetup.length,
+                  id: `1_${i - cardPositionSetup.length}`,
               }
     })
+
+export const handleStockPileClick = (
+    cards: CardInGame[],
+    cardsToWastePile = 3,
+    stockPilePosition = 1,
+    wastePilePosition = 2
+) => {
+    const items = [...cards]
+    const stockMaxPos = getMaxStackPosition(stockPilePosition, cards)
+    const wasteMaxPos = getMaxStackPosition(wastePilePosition, cards)
+    if (stockMaxPos === -1) {
+        if (wasteMaxPos !== -1) {
+            const wastePileCards = items.filter(
+                (c) => c.boardPosition === wastePilePosition
+            )
+            wastePileCards.forEach((c) => {
+                c.boardPosition = stockPilePosition
+                c.stackPosition = wasteMaxPos - c.stackPosition
+                c.revealed = false
+            })
+        }
+    } else {
+        const stockPileCards = items
+            .filter((c) => c.boardPosition === stockPilePosition)
+            .sort((a, b) => b.stackPosition - a.stackPosition)
+        stockPileCards.forEach((c, ix) => {
+            if (ix < cardsToWastePile) {
+                c.boardPosition = wastePilePosition
+                c.stackPosition = wasteMaxPos + ix + 1
+                c.revealed = true
+            }
+        })
+    }
+    return items
+}
 
 export const isAllowedMove = (
     result: DropResult,

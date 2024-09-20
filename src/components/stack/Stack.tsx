@@ -22,6 +22,8 @@ type StackProps = {
     screenHeight: ScreenHeight
     spreadStyle?: SpreadStyle
     handleCardClick?: () => void
+    hideLandingArea?: boolean
+    title?: string
 }
 
 const Stack = ({
@@ -30,6 +32,8 @@ const Stack = ({
     screenHeight,
     spreadStyle = 'md',
     handleCardClick,
+    hideLandingArea = false,
+    title,
 }: StackProps) => {
     return (
         <StrictModeDroppable droppableId={`${id}`}>
@@ -38,8 +42,13 @@ const Stack = ({
                     className={`relative ${cardMarginTopClasses[screenHeight].base} ${pileHeightClasses[screenHeight][spreadStyle]} rounded-md`}
                     ref={provided.innerRef}
                     {...provided.droppableProps}
-                    style={getTargetedStyle(snapshot.isDraggingOver)}
+                    style={
+                        hideLandingArea
+                            ? { opacity: '100%' }
+                            : getTargetedStyle(snapshot.isDraggingOver)
+                    }
                     {...provided.droppableProps}>
+                    {title && <div className="text-white mb-16">{title}</div>}
                     <div
                         className={`absolute w-full -${
                             cardMarginTopClasses[screenHeight].base

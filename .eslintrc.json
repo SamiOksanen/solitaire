@@ -45,5 +45,5 @@
             }
         ]
     },
-    "ignorePatterns": ["tailwind.config.js"]
+    "ignorePatterns": ["next.config.js", "postcss.config.js"]
 }

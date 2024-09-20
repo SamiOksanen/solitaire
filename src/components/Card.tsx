@@ -1,8 +1,8 @@
-import { IntRange, Suit } from 'src/utils/cards.util'
+import { Rank, Suit } from 'src/utils/cards.util'
 
 type CardProps = {
     suit: Suit
-    rank: IntRange<1, 14>
+    rank: Rank
     revealed?: boolean
     additionalStyleClass: string
     handleClick?: () => void

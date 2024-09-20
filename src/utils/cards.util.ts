@@ -19,9 +19,11 @@ export type CardSpreadStyle = 'base' | SpreadStyle
 
 export type Suit = 'clubs' | 'diamonds' | 'hearts' | 'spades'
 
+export type Rank = IntRange<1, 14>
+
 export interface Card {
     suit: Suit
-    rank: IntRange<1, 14>
+    rank: Rank
 }
 
 export interface CardPosition {
@@ -31,6 +33,7 @@ export interface CardPosition {
 }
 
 export interface CardInGame extends Card, CardPosition {
+    id: string
     isBeingDragged?: boolean
     isPartOfDragging?: boolean
 }
@@ -41,7 +44,7 @@ const deckOfCards: Card[] = suits
     .map((suit) =>
         Array.from(new Array(13), (x, i) => i + 1).map((rank) => ({
             suit: suit,
-            rank: rank as IntRange<1, 14>,
+            rank: rank as Rank,
         }))
     )
     .flat()
@@ -167,27 +170,27 @@ export const pileHeightClasses: Record<
     Record<SpreadStyle, string>
 > = {
     xs: {
-        none: 'h-52',
+        none: 'h-73',
         sm: 'h-52',
         md: 'h-73',
     },
     sm: {
-        none: 'h-52',
+        none: 'h-73',
         sm: 'h-52',
         md: 'h-73',
     },
     md: {
-        none: 'h-54',
+        none: 'h-76',
         sm: 'h-54',
         md: 'h-76',
     },
     lg: {
-        none: 'h-54',
+        none: 'h-80',
         sm: 'h-54',
         md: 'h-80',
     },
     xl: {
-        none: 'h-54',
+        none: 'h-96',
         sm: 'h-54',
         md: 'h-96',
     },
@@ -228,7 +231,7 @@ export const handleCardMovementStart = (
     start: DragStart,
     cards: CardInGame[]
 ): CardInGame[] => {
-    const items = Array.from(cards)
+    const items = [...cards]
     const sourceCards = items.filter(
         (c) => c.boardPosition === Number(start.source.droppableId)
     )
@@ -249,7 +252,7 @@ export const handleCardMovementEnd = (
     cards: CardInGame[],
     isAllowed: boolean
 ): CardInGame[] => {
-    const items = Array.from(cards)
+    const items = [...cards]
     const sourceCards = items.filter(
         (c) => c.boardPosition === Number(result.source.droppableId)
     )
@@ -287,41 +290,5 @@ export const handleCardMovementEnd = (
         })
     }
 
-    return items
-}
-
-export const handleStockPileClick = (
-    cards: CardInGame[],
-    cardsToWastePile = 3,
-    stockPilePosition = 1,
-    wastePilePosition = 2
-) => {
-    const items = Array.from(cards)
-    const stockMaxPos = getMaxStackPosition(stockPilePosition, cards)
-    const wasteMaxPos = getMaxStackPosition(wastePilePosition, cards)
-    if (stockMaxPos === -1) {
-        if (wasteMaxPos !== -1) {
-            const wastePileCards = items.filter(
-                (c) => c.boardPosition === wastePilePosition
-            )
-            wastePileCards.forEach((c) => {
-                c.boardPosition = stockPilePosition
-                c.stackPosition = wasteMaxPos - c.stackPosition
-                c.revealed = false
-            })
-        }
-    } else {
-        const stockPileCards = items.filter(
-            (c) => c.boardPosition === stockPilePosition
-        )
-        stockPileCards.forEach((c) => {
-            if (c.stackPosition + cardsToWastePile > stockMaxPos) {
-                c.boardPosition = wastePilePosition
-                c.stackPosition =
-                    wasteMaxPos + stockMaxPos - c.stackPosition + 1
-                c.revealed = true
-            }
-        })
-    }
     return items
 }

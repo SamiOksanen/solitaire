@@ -12,7 +12,7 @@ test.describe('navigation', () => {
         await page.click('text=Klondike solitaire')
         await expect(page).toHaveURL('http://localhost:3000/klondike/')
         await expect(
-            page.locator('div[data-rbd-droppable-id="7"]')
+            page.locator('div[data-rfd-droppable-id="7"]')
         ).toBeVisible()
         await page.click('text=Back')
         await expect(page).toHaveURL('http://localhost:3000')

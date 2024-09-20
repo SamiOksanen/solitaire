@@ -53,8 +53,8 @@ const StackCards = ({
                     (c, index) =>
                         !c.isPartOfDragging && (
                             <Draggable
-                                key={`${c.suit}${c.rank}`}
-                                draggableId={`${c.suit}${c.rank}`}
+                                key={c.id}
+                                draggableId={c.id}
                                 index={index}>
                                 {(provided, snapshot) => {
                                     let cardSpreadStyle: CardSpreadStyle
@@ -90,7 +90,7 @@ const StackCards = ({
                                                             c2.isPartOfDragging &&
                                                             ix2 > index)) && (
                                                         <Card
-                                                            key={ix2}
+                                                            key={c2.id}
                                                             suit={c2.suit}
                                                             rank={c2.rank}
                                                             revealed={

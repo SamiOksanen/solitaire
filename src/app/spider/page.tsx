@@ -3,29 +3,24 @@
 import React, { useEffect, useState } from 'react'
 import { DragDropContext, DragStart, DropResult } from '@hello-pangea/dnd'
 import Confetti from 'react-confetti'
-import {
-    gridGapXClass,
-    gridGapYClass,
-    gridMarginTopClasses,
-    gridMaxWidthClasses,
-    handleCardMovementEnd,
-    handleCardMovementStart,
-} from 'src/utils/cards.util'
+import { handleCardMovementStart } from 'src/utils/cards.util'
 import Stack from 'src/components/stack/Stack'
 import useScreenHeight from 'src/utils/hooks/useScreenHeight'
 import useScreenWidth from 'src/utils/hooks/useScreenWidth'
 import {
     getSetup,
+    handleSpiderCardMovementEnd,
     handleStockPileClick,
     hasValidMovesLeft,
     isAllowedMove,
     isCompleted,
-} from 'src/app/klondike/klondike.util'
+} from 'src/app/spider/spider.util'
 import AlertModal from 'src/components/modal/AlertModal'
 import PlayAgainModal from 'src/components/modal/PlayAgainModal'
 import Header from 'src/components/Header'
+import { ScreenHeight, ScreenWidth } from 'src/utils/screen.util'
 
-const Klondike = () => {
+const Spider = () => {
     const [cards, setCards] = useState(getSetup())
     const [alertModalIsOpen, setAlertModalIsOpen] = useState(false)
     const [alertModalContent, setAlertModalContent] = useState('')
@@ -42,7 +37,7 @@ const Klondike = () => {
 
     const handleOnDragEnd = (result: DropResult) => {
         setCards(
-            handleCardMovementEnd(
+            handleSpiderCardMovementEnd(
                 result,
                 cards,
                 isAllowedMove(result, cards, openAlertModal)
@@ -74,52 +69,71 @@ const Klondike = () => {
         setAlertModalIsOpen(true)
     }
 
+    const gridMaxWidthClasses: Record<ScreenHeight, string> = {
+        xs: 'max-w-4xl',
+        sm: 'max-w-4xl',
+        md: 'max-w-6xl',
+        lg: 'max-w-6xl',
+        xl: 'max-w-6xl',
+    }
+
+    const gridMarginTopClasses: Record<ScreenHeight, string> = {
+        xs: '-mt-2',
+        sm: '-mt-2',
+        md: '-mt-2',
+        lg: '-mt-2',
+        xl: '-mt-40',
+    }
+
+    const gridGapXClass: Record<ScreenWidth, string> = {
+        xs: 'gap-x-1',
+        sm: 'gap-x-1',
+        md: 'gap-x-2',
+    }
+
     return (
         <>
-            <Header title="Klondike Solitaire" hasBackLink hasRestartButton />
+            <Header title="Spider Solitaire" hasBackLink hasRestartButton />
             <DragDropContext
                 onDragStart={handleOnDragStart}
                 onDragEnd={handleOnDragEnd}>
                 <div
                     id="cards"
-                    className={`cards items-end ${gridMaxWidthClasses[screenHeight]} mx-auto ${gridMarginTopClasses[screenHeight]} px-2 grid grid-rows-2 grid-cols-7 ${gridGapYClass[screenHeight]} ${gridGapXClass[screenWidth]}`}>
+                    className={`cards items-end ${gridMaxWidthClasses[screenHeight]} mx-auto ${gridMarginTopClasses[screenHeight]} px-2 grid grid-rows-2 grid-cols-10 ${gridGapXClass[screenWidth]}`}>
+                    <Stack
+                        id={0}
+                        cards={cards.filter((c) => c.boardPosition === 0)}
+                        screenHeight={screenHeight}
+                    />
                     <Stack
                         id={1}
                         cards={cards.filter((c) => c.boardPosition === 1)}
                         screenHeight={screenHeight}
-                        spreadStyle="sm"
-                        handleCardClick={() => handleStockPileCardClick()}
                     />
                     <Stack
                         id={2}
                         cards={cards.filter((c) => c.boardPosition === 2)}
                         screenHeight={screenHeight}
-                        spreadStyle="sm"
                     />
-                    <div />
                     <Stack
                         id={3}
                         cards={cards.filter((c) => c.boardPosition === 3)}
                         screenHeight={screenHeight}
-                        spreadStyle="sm"
                     />
                     <Stack
                         id={4}
                         cards={cards.filter((c) => c.boardPosition === 4)}
                         screenHeight={screenHeight}
-                        spreadStyle="sm"
                     />
                     <Stack
                         id={5}
                         cards={cards.filter((c) => c.boardPosition === 5)}
                         screenHeight={screenHeight}
-                        spreadStyle="sm"
                     />
                     <Stack
                         id={6}
                         cards={cards.filter((c) => c.boardPosition === 6)}
                         screenHeight={screenHeight}
-                        spreadStyle="sm"
                     />
                     <Stack
                         id={7}
@@ -136,25 +150,23 @@ const Klondike = () => {
                         cards={cards.filter((c) => c.boardPosition === 9)}
                         screenHeight={screenHeight}
                     />
+                    <div />
+                    <div />
+                    <div />
+                    <div />
+                    <div />
+                    <div />
+                    <div />
+                    <div />
+                    <div />
                     <Stack
                         id={10}
                         cards={cards.filter((c) => c.boardPosition === 10)}
                         screenHeight={screenHeight}
-                    />
-                    <Stack
-                        id={11}
-                        cards={cards.filter((c) => c.boardPosition === 11)}
-                        screenHeight={screenHeight}
-                    />
-                    <Stack
-                        id={12}
-                        cards={cards.filter((c) => c.boardPosition === 12)}
-                        screenHeight={screenHeight}
-                    />
-                    <Stack
-                        id={13}
-                        cards={cards.filter((c) => c.boardPosition === 13)}
-                        screenHeight={screenHeight}
+                        spreadStyle="none"
+                        handleCardClick={() => handleStockPileCardClick()}
+                        hideLandingArea
+                        title={`Stock: ${cards.filter((c) => c.boardPosition === 10).length}`}
                     />
                 </div>
                 <AlertModal
@@ -174,4 +186,4 @@ const Klondike = () => {
     )
 }
 
-export default Klondike
+export default Spider
