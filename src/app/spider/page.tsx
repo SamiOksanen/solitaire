@@ -14,6 +14,7 @@ import {
     hasValidMovesLeft,
     isAllowedMove,
     isCompleted,
+    pileHeightClasses,
 } from 'src/app/spider/spider.util'
 import AlertModal from 'src/components/modal/AlertModal'
 import PlayAgainModal from 'src/components/modal/PlayAgainModal'
@@ -77,19 +78,13 @@ const Spider = () => {
         xl: 'max-w-6xl',
     }
 
-    const gridMarginTopClasses: Record<ScreenHeight, string> = {
-        xs: '-mt-2',
-        sm: '-mt-2',
-        md: '-mt-2',
-        lg: '-mt-2',
-        xl: '-mt-40',
-    }
-
     const gridGapXClass: Record<ScreenWidth, string> = {
         xs: 'gap-x-1',
         sm: 'gap-x-1',
         md: 'gap-x-2',
     }
+
+    const pileHeight = pileHeightClasses[screenHeight]
 
     return (
         <>
@@ -99,56 +94,66 @@ const Spider = () => {
                 onDragEnd={handleOnDragEnd}>
                 <div
                     id="cards"
-                    className={`cards items-end ${gridMaxWidthClasses[screenHeight]} mx-auto ${gridMarginTopClasses[screenHeight]} px-2 grid grid-rows-2 grid-cols-10 ${gridGapXClass[screenWidth]}`}>
+                    className={`cards items-end ${gridMaxWidthClasses[screenHeight]} mx-auto -mt-2 px-2 grid grid-rows-spiderLayout grid-cols-10 ${gridGapXClass[screenWidth]}`}>
                     <Stack
                         id={0}
                         cards={cards.filter((c) => c.boardPosition === 0)}
                         screenHeight={screenHeight}
+                        pileHeight={pileHeight}
                     />
                     <Stack
                         id={1}
                         cards={cards.filter((c) => c.boardPosition === 1)}
                         screenHeight={screenHeight}
+                        pileHeight={pileHeight}
                     />
                     <Stack
                         id={2}
                         cards={cards.filter((c) => c.boardPosition === 2)}
                         screenHeight={screenHeight}
+                        pileHeight={pileHeight}
                     />
                     <Stack
                         id={3}
                         cards={cards.filter((c) => c.boardPosition === 3)}
                         screenHeight={screenHeight}
+                        pileHeight={pileHeight}
                     />
                     <Stack
                         id={4}
                         cards={cards.filter((c) => c.boardPosition === 4)}
                         screenHeight={screenHeight}
+                        pileHeight={pileHeight}
                     />
                     <Stack
                         id={5}
                         cards={cards.filter((c) => c.boardPosition === 5)}
                         screenHeight={screenHeight}
+                        pileHeight={pileHeight}
                     />
                     <Stack
                         id={6}
                         cards={cards.filter((c) => c.boardPosition === 6)}
                         screenHeight={screenHeight}
+                        pileHeight={pileHeight}
                     />
                     <Stack
                         id={7}
                         cards={cards.filter((c) => c.boardPosition === 7)}
                         screenHeight={screenHeight}
+                        pileHeight={pileHeight}
                     />
                     <Stack
                         id={8}
                         cards={cards.filter((c) => c.boardPosition === 8)}
                         screenHeight={screenHeight}
+                        pileHeight={pileHeight}
                     />
                     <Stack
                         id={9}
                         cards={cards.filter((c) => c.boardPosition === 9)}
                         screenHeight={screenHeight}
+                        pileHeight={pileHeight}
                     />
                     <div />
                     <div />
@@ -163,6 +168,7 @@ const Spider = () => {
                         id={10}
                         cards={cards.filter((c) => c.boardPosition === 10)}
                         screenHeight={screenHeight}
+                        pileHeight="h-36"
                         spreadStyle="none"
                         handleCardClick={() => handleStockPileCardClick()}
                         hideLandingArea

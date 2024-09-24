@@ -1,4 +1,5 @@
 import { DropResult } from '@hello-pangea/dnd'
+import { ScreenHeight } from 'src/utils/screen.util'
 import {
     CardInGame,
     CardPosition,
@@ -270,4 +271,12 @@ export const handleSpiderCardMovementEnd = (
 
 export const isCompleted = (cards: CardInGame[]): boolean => {
     return cards.length === 0
+}
+
+export const pileHeightClasses: Record<ScreenHeight, string> = {
+    xs: 'h-72',
+    sm: 'h-88',
+    md: 'h-96',
+    lg: 'h-112',
+    xl: 'h-136',
 }

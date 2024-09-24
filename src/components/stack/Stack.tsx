@@ -24,6 +24,7 @@ type StackProps = {
     handleCardClick?: () => void
     hideLandingArea?: boolean
     title?: string
+    pileHeight?: string
 }
 
 const Stack = ({
@@ -34,12 +35,13 @@ const Stack = ({
     handleCardClick,
     hideLandingArea = false,
     title,
+    pileHeight,
 }: StackProps) => {
     return (
         <StrictModeDroppable droppableId={`${id}`}>
             {(provided, snapshot) => (
                 <div
-                    className={`relative ${cardMarginTopClasses[screenHeight].base} ${pileHeightClasses[screenHeight][spreadStyle]} rounded-md`}
+                    className={`relative ${cardMarginTopClasses[screenHeight].base} ${pileHeight ?? pileHeightClasses[screenHeight][spreadStyle]} rounded-md`}
                     ref={provided.innerRef}
                     {...provided.droppableProps}
                     style={
@@ -57,7 +59,7 @@ const Stack = ({
                         } p-0.5 mb-2 mr-2 rounded-lg group bg-gradient-to-br from-red-200 via-red-300 to-yellow-200`}
                         onClick={handleCardClick}>
                         <div
-                            className="relative w-full h-full px-5 py-2.5 transition-all ease-in rounded-md"
+                            className="relative w-full h-full py-2.5 transition-all ease-in rounded-md"
                             style={getTargetedStyle(snapshot.isDraggingOver)}
                         />
                     </div>

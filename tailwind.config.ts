@@ -15,9 +15,15 @@ export default {
                 54: '13.5rem',
                 73: '18.25rem',
                 76: '19rem',
+                88: '22rem',
+                112: '28rem',
+                136: '34rem',
             },
             maxWidth: {
                 '9/10': '90%',
+            },
+            gridTemplateRows: {
+                spiderLayout: 'minmax(0, 1fr) minmax(0, 180px)',
             },
         },
     },

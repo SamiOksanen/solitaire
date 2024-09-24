@@ -11,11 +11,11 @@ export const getScreenHeight = (): ScreenHeight => {
         if (window.innerHeight >= 842) {
             return 'md'
         }
-        if (window.innerHeight <= 762) {
-            return 'xs'
+        if (window.innerHeight >= 762) {
+            return 'sm'
         }
     }
-    return 'sm'
+    return 'xs'
 }
 
 export type ScreenWidth = 'xs' | 'sm' | 'md'

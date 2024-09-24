@@ -70,11 +70,11 @@ const shuffle = (array: Card[]) => {
 }
 
 export const gridMaxWidthClasses: Record<ScreenHeight, string> = {
-    xs: 'max-w-4xl',
-    sm: 'max-w-4xl',
-    md: 'max-w-6xl',
-    lg: 'max-w-6xl',
-    xl: 'max-w-6xl',
+    xs: 'max-w-2xl',
+    sm: 'max-w-2xl',
+    md: 'max-w-3xl',
+    lg: 'max-w-4xl',
+    xl: 'max-w-4xl',
 }
 
 export const gridMarginTopClasses: Record<ScreenHeight, string> = {
@@ -199,7 +199,7 @@ export const pileHeightClasses: Record<
 export const gridGapXClass: Record<ScreenWidth, string> = {
     xs: 'gap-x-1',
     sm: 'gap-x-2',
-    md: 'gap-x-4',
+    md: 'gap-x-3',
 }
 
 export const gridGapYClass: Record<ScreenHeight, string> = {
