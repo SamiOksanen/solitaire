@@ -230,7 +230,6 @@ export const hasValidMovesLeft = (cards: CardInGame[]): boolean => {
                     !hasSameSuit(c, cardBelow) ||
                     !isOneRankLower(c, cardBelow))
             ) {
-                console.log(c.suit, c.rank)
                 return true
             }
 
@@ -248,7 +247,6 @@ export const hasValidMovesLeft = (cards: CardInGame[]): boolean => {
                     hasSameSuit(c, c2) &&
                     isOneRankLower(c, c2)
                 ) {
-                    console.log(c.suit, c.rank, c2.suit, c2.rank)
                     return true
                 }
             }

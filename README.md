@@ -66,4 +66,4 @@ https://solitaire.samioksanen.fi
 
 ## CI/CD 🛠
 
-Firebase Hosting
+GitHub Actions CI/CD with deployment to Firebase Hosting
