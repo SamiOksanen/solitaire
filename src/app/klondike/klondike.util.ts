@@ -107,13 +107,20 @@ export const isAllowedMove = (
                     return false
                 }
                 firstDraggedCard = c
-            } else {
-                if (
-                    singleCardSource.includes(source) &&
-                    c.stackPosition > result.source.index
-                ) {
+            }
+            if (c.stackPosition > result.source.index) {
+                if (singleCardSource.includes(source)) {
                     openModal(
                         'Only one card at a time is allowed to be moved from this pile!'
+                    )
+                    return false
+                }
+                if (
+                    foundations.includes(destination) &&
+                    !foundations.includes(source)
+                ) {
+                    openModal(
+                        'Cannot move multiple cards with different suits and wrong order to the same foundation pile!'
                     )
                     return false
                 }
