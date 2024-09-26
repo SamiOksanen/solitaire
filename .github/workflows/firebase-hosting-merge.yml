@@ -1,4 +1,7 @@
-name: Deploy to Firebase Hosting on merge
+name: Build and Deploy to Firebase Hosting
+concurrency:
+  group: Production
+  cancel-in-progress: true
 on:
   push:
     branches:
@@ -7,6 +10,7 @@ jobs:
   build_and_deploy:
     name: Build ⛏ and Deploy 🚀
     runs-on: ubuntu-latest
+    environment: Production
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4

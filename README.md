@@ -9,6 +9,16 @@ Solitaire with drag and drop, and touch support.
     -   Exports to a static site
     -   Playwright for end-to-end tests
 
+## Deployment 🚚
+
+https://solitaire.samioksanen.fi
+
+## CI/CD 🛠
+
+![Production workflow](https://github.com/SamiOksanen/solitaire/actions/workflows/firebase-hosting-merge.yml/badge.svg)
+
+GitHub Actions CI/CD with deployment to Firebase Hosting
+
 ## Development setup
 
 Install:
@@ -59,11 +69,3 @@ To test locally:
     ```bash
     npx playwright codegen localhost:3000
     ```
-
-## Deployment 🚚
-
-https://solitaire.samioksanen.fi
-
-## CI/CD 🛠
-
-GitHub Actions CI/CD with deployment to Firebase Hosting
