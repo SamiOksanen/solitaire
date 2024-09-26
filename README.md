@@ -6,6 +6,7 @@ Solitaire with drag and drop, and touch support.
     -   Uses Next.js 14 with app directory
     -   Uses @hello-pangea/dnd for drag and drop
     -   Tailwind for styling
+    -   Exports to a static site
     -   Playwright for end-to-end tests
 
 ## Development setup
@@ -65,4 +66,4 @@ https://solitaire.samioksanen.fi
 
 ## CI/CD 🛠
 
-Vercel
+GitHub Actions CI/CD with deployment to Firebase Hosting

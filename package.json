@@ -5,7 +5,7 @@
     "scripts": {
         "dev": "next dev --turbo",
         "build": "next build",
-        "start": "next start",
+        "start": "npx http-server out -p 3000",
         "lint": "next lint",
         "format": "prettier --write \"./**/*.{ts,tsx,css}\"",
         "test:e2e": "playwright test"
