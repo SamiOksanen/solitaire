@@ -11,7 +11,7 @@ Modal.setAppElement('#main')
 const AlertModal = ({ isOpen, content, close }: AlertModalProps) => {
     return (
         <Modal
-            className="fixed z-50 top-3/4 max-w-9/10 overflow-x-hidden overflow-y-auto focus:ring-4 focus:outline-none focus:ring-red-400 focus:rounded-lg"
+            className="fixed z-50 top-3/4 max-w-9/10 overflow-x-hidden overflow-y-auto focus:ring-4 focus:outline-hidden focus:ring-red-400 focus:rounded-lg"
             isOpen={isOpen}
             onRequestClose={close}
             overlayClassName="flex absolute z-40 top-0 h-screen w-screen justify-center bg-green-800/50"
@@ -21,7 +21,7 @@ const AlertModal = ({ isOpen, content, close }: AlertModalProps) => {
                 role="alert">
                 <svg
                     aria-hidden="true"
-                    className="flex-shrink-0 inline w-5 h-5 mr-3 my-auto"
+                    className="shrink-0 inline w-5 h-5 mr-3 my-auto"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                     xmlns="http://www.w3.org/2000/svg">
@@ -36,7 +36,7 @@ const AlertModal = ({ isOpen, content, close }: AlertModalProps) => {
                 </div>
                 <button
                     type="button"
-                    className="text-yellow-400 bg-transparent rounded-lg text-sm p-1.5 ml-2 inline-flex items-center hover:bg-yellow-400 hover:text-white focus:ring-4 focus:outline-none focus:ring-red-400 focus:rounded-lg"
+                    className="text-yellow-400 bg-transparent rounded-lg text-sm p-1.5 ml-2 inline-flex items-center hover:bg-yellow-400 hover:text-white focus:ring-4 focus:outline-hidden focus:ring-red-400 focus:rounded-lg"
                     onClick={close}>
                     <svg
                         aria-hidden="true"

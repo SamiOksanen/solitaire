@@ -22,7 +22,7 @@ const Header = ({ title, hasBackLink, hasRestartButton }: HeaderProps) => {
                         href={'/'}
                         passHref
                         replace
-                        className="relative inline-flex items-center justify-center p-0.5 mb-1 mx-1 max-w-fit overflow-hidden text-sm font-medium rounded-lg group bg-gradient-to-br from-red-200 via-red-300 to-yellow-200 group-hover:from-red-200 group-hover:via-red-300 group-hover:to-yellow-200 text-white hover:text-gray-900 focus:ring-4 focus:outline-none focus:ring-red-400 mt-2">
+                        className="relative inline-flex items-center justify-center p-0.5 mb-1 mx-1 max-w-fit overflow-hidden text-sm font-medium rounded-lg group bg-linear-to-br from-red-200 via-red-300 to-yellow-200 group-hover:from-red-200 group-hover:via-red-300 group-hover:to-yellow-200 text-white hover:text-gray-900 focus:ring-4 focus:outline-hidden focus:ring-red-400 mt-2">
                         <div className="relative inline-flex items-center justify-center px-2.5 py-2.5 w-full h-full transition-all ease-in duration-75 bg-green-700 rounded-md group-hover:bg-opacity-0">
                             <svg
                                 aria-hidden="true"
@@ -43,7 +43,7 @@ const Header = ({ title, hasBackLink, hasRestartButton }: HeaderProps) => {
                     <button
                         key={'restart-link'}
                         onClick={() => window.location.reload()}
-                        className="relative inline-flex items-center justify-center p-0.5 mb-1 mx-1 max-w-fit overflow-hidden text-sm font-medium rounded-lg group bg-gradient-to-br from-red-200 via-red-300 to-yellow-200 group-hover:from-red-200 group-hover:via-red-300 group-hover:to-yellow-200 text-white hover:text-gray-900 focus:ring-4 focus:outline-none focus:ring-red-400 mt-2">
+                        className="relative inline-flex items-center justify-center p-0.5 mb-1 mx-1 max-w-fit overflow-hidden text-sm font-medium rounded-lg group bg-linear-to-br from-red-200 via-red-300 to-yellow-200 group-hover:from-red-200 group-hover:via-red-300 group-hover:to-yellow-200 text-white hover:text-gray-900 focus:ring-4 focus:outline-hidden focus:ring-red-400 mt-2">
                         <div className="relative inline-flex items-center justify-center px-2.5 py-2.5 w-full h-full transition-all ease-in duration-75 bg-green-700 rounded-md group-hover:bg-opacity-0">
                             <svg
                                 className={`w-5 h-5 ${iconOnly ? '' : 'mr-1'}`}

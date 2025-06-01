@@ -12,16 +12,16 @@ Modal.setAppElement('#main')
 const PlayAgainModal = ({ isOpen, success, content, close }: Props) => {
     return (
         <Modal
-            className="fixed z-50 top-1/4 overflow-y-auto overflow-x-hidden justify-center items-center focus:outline-none"
+            className="fixed z-50 top-1/4 overflow-y-auto overflow-x-hidden justify-center items-center focus:outline-hidden"
             isOpen={isOpen}
             onRequestClose={close}
             overlayClassName="flex absolute z-40 top-0 h-screen w-screen justify-center bg-green-800/50"
             shouldCloseOnOverlayClick={true}>
-            <div className="relative p-1 w-full max-w-md max-h-full rounded-xl bg-gradient-to-br from-red-200 via-red-300 to-yellow-200">
-                <div className="relative w-full h-full px-5 py-2.5 rounded-lg shadow bg-gradient-to-br from-green-400 to-blue-600">
+            <div className="relative p-1 w-full max-w-md max-h-full rounded-xl bg-linear-to-br from-red-200 via-red-300 to-yellow-200">
+                <div className="relative w-full h-full px-5 py-2.5 rounded-lg shadow-sm bg-linear-to-br from-green-400 to-blue-600">
                     <button
                         type="button"
-                        className="absolute top-3 end-2.5 text-white bg-transparent hover:text-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-700 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center"
+                        className="absolute top-3 end-2.5 text-white bg-transparent hover:text-gray-700 focus:ring-4 focus:outline-hidden focus:ring-gray-700 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center"
                         data-modal-hide="popup-modal"
                         onClick={close}>
                         <svg
@@ -74,7 +74,7 @@ const PlayAgainModal = ({ isOpen, success, content, close }: Props) => {
                         <button
                             data-modal-hide="popup-modal"
                             type="button"
-                            className="inline-flex items-center justify-center p-0.5 mb-2 ml-0 max-w-fit overflow-hidden text-sm font-medium rounded-lg group bg-gradient-to-br from-red-200 via-red-300 to-yellow-200 group-hover:from-red-200 group-hover:via-red-300 group-hover:to-yellow-200 text-white hover:text-gray-900 focus:ring-4 focus:outline-none focus:ring-red-400 mt-2"
+                            className="inline-flex items-center justify-center p-0.5 mb-2 ml-0 max-w-fit overflow-hidden text-sm font-medium rounded-lg group bg-linear-to-br from-red-200 via-red-300 to-yellow-200 group-hover:from-red-200 group-hover:via-red-300 group-hover:to-yellow-200 text-white hover:text-gray-900 focus:ring-4 focus:outline-hidden focus:ring-red-400 mt-2"
                             onClick={() => window.location.reload()}>
                             <span className="inline-flex items-center justify-center px-5 py-2.5 w-full h-full transition-all ease-in duration-75 bg-green-700 rounded-md group-hover:bg-opacity-0">
                                 Play again
@@ -83,7 +83,7 @@ const PlayAgainModal = ({ isOpen, success, content, close }: Props) => {
                         <button
                             data-modal-hide="popup-modal"
                             type="button"
-                            className="inline-flex items-center justify-center p-0.5 mb-2 ml-2 max-w-fit overflow-hidden text-sm font-medium rounded-lg group bg-gradient-to-br from-red-200 via-red-300 to-yellow-200 group-hover:from-red-200 group-hover:via-red-300 group-hover:to-yellow-200 text-white hover:text-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-800 mt-2"
+                            className="inline-flex items-center justify-center p-0.5 mb-2 ml-2 max-w-fit overflow-hidden text-sm font-medium rounded-lg group bg-linear-to-br from-red-200 via-red-300 to-yellow-200 group-hover:from-red-200 group-hover:via-red-300 group-hover:to-yellow-200 text-white hover:text-gray-900 focus:ring-4 focus:outline-hidden focus:ring-gray-800 mt-2"
                             onClick={close}>
                             <span className="inline-flex items-center justify-center px-5 py-2.5 w-full h-full transition-all ease-in duration-75 bg-gray-600 rounded-md group-hover:bg-opacity-0">
                                 Close
