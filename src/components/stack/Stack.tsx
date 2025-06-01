@@ -56,7 +56,7 @@ const Stack = ({
                             cardMarginTopClasses[screenHeight].base
                         } ${cardHeightClasses[screenHeight]} ${
                             handleCardClick ? ' cursor-pointer' : ''
-                        } p-0.5 mb-2 mr-2 rounded-lg group bg-gradient-to-br from-red-200 via-red-300 to-yellow-200`}
+                        } p-0.5 mb-2 mr-2 rounded-lg group bg-linear-to-br from-red-200 via-red-300 to-yellow-200`}
                         onClick={handleCardClick}>
                         <div
                             className="relative w-full h-full py-2.5 transition-all ease-in rounded-md"

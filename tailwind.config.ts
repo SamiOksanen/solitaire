@@ -1,5 +1,3 @@
-import type { Config } from 'tailwindcss'
-
 export default {
     content: ['./src/**/*.{js,ts,jsx,tsx}'],
     theme: {
@@ -19,9 +17,7 @@ export default {
                 112: '28rem',
                 136: '34rem',
             },
-            maxWidth: {
-                '9/10': '90%',
-            },
+            maxWidth: { '9/10': '90%' },
             gridTemplateRows: {
                 spiderLayout: 'minmax(0, 1fr) minmax(0, 180px)',
             },
@@ -57,4 +53,4 @@ export default {
         'max-w-4xl',
         'max-w-6xl',
     ],
-} satisfies Config
+}

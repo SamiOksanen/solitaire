@@ -12,7 +12,7 @@ export default function RootLayout({
             <body>
                 <div
                     id="main"
-                    className="min-h-screen w-screen overflow-hidden text-white text-base bg-gradient-to-br from-green-600 to-green-900">
+                    className="min-h-screen w-screen overflow-hidden text-white text-base bg-linear-to-br from-green-600 to-green-900">
                     <section className="relative z-10">{children}</section>
                     <Footer />
                 </div>

@@ -39,7 +39,7 @@ const Card = ({
     ) : (
         <div className="w-full h-full rounded-md bg-white p-1">
             <div
-                className="bg-repeat w-full h-full rounded-sm border border-solid border-black"
+                className="bg-repeat w-full h-full rounded-xs border border-solid border-black"
                 style={{
                     backgroundImage: 'url("/red-bg-white-cross-29.png")',
                 }}></div>

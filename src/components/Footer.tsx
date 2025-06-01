@@ -2,14 +2,14 @@ import Link from 'next/link'
 
 const Footer = () => (
     <footer className="relative bottom-0 w-full my-3 z-0">
-        <span className="mr-4">© 2024 Sami Oksanen</span>
+        <span className="mr-4">© 2025 Sami Oksanen</span>
         <Link
             key={'klondike-link'}
             href={'https://github.com/SamiOksanen/solitaire'}
             passHref
             replace
             target="_blank"
-            className="relative inline-flex items-center justify-center p-0.5 my-2 ml-4 text-white bg-[#24292F] hover:bg-[#24292F]/90 focus:ring-4 focus:outline-none focus:ring-[#24292F]/50 font-medium rounded-lg text-sm text-center dark:focus:ring-gray-500 dark:hover:bg-[#050708]/30">
+            className="relative inline-flex items-center justify-center p-0.5 my-2 ml-4 text-white bg-[#24292F] hover:bg-[#24292F]/90 focus:ring-4 focus:outline-hidden focus:ring-[#24292F]/50 font-medium rounded-lg text-sm text-center dark:focus:ring-gray-500 dark:hover:bg-[#050708]/30">
             <span className="relative inline-flex px-5 py-2.5">
                 <svg
                     className="w-4 h-4 mr-2 -ml-1"

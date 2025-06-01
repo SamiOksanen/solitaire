@@ -94,7 +94,7 @@ const Spider = () => {
                 onDragEnd={handleOnDragEnd}>
                 <div
                     id="cards"
-                    className={`cards items-end ${gridMaxWidthClasses[screenHeight]} mx-auto -mt-2 px-2 grid grid-rows-spiderLayout grid-cols-10 ${gridGapXClass[screenWidth]}`}>
+                    className={`cards items-end ${gridMaxWidthClasses[screenHeight]} mx-auto -mt-2 px-2 grid grid-rows-spider-layout grid-cols-10 ${gridGapXClass[screenWidth]}`}>
                     <Stack
                         id={0}
                         cards={cards.filter((c) => c.boardPosition === 0)}
