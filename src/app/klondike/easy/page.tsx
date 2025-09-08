@@ -26,7 +26,7 @@ import PlayAgainModal from 'src/components/modal/PlayAgainModal'
 import Header from 'src/components/Header'
 import { useUndo } from 'src/utils/hooks/useUndo'
 
-const Klondike = () => {
+const KlondikeEasy = () => {
     const initialCards = getSetup()
     const [cards, setCards] = useState(initialCards)
     const { canUndo, saveState, undo, clearHistory } = useUndo(initialCards)
@@ -188,4 +188,4 @@ const Klondike = () => {
     )
 }
 
-export default Klondike
+export default KlondikeEasy

@@ -84,7 +84,7 @@ const Klondike = () => {
     return (
         <>
             <Header
-                title="Klondike Solitaire"
+                title="Klondike"
                 hasBackLink
                 hasRestartButton
                 hasUndoButton

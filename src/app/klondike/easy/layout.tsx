@@ -1,0 +1,14 @@
+import type { Metadata } from 'next'
+import 'src/app/globals.css'
+
+export const metadata: Metadata = {
+    title: 'Klondike Solitaire (Easy)',
+}
+
+export default function KlondikeLayout({
+    children,
+}: {
+    children: React.ReactNode
+}) {
+    return <section>{children}</section>
+}

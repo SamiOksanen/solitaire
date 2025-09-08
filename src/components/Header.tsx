@@ -24,8 +24,8 @@ const Header = ({
     const iconOnly = screenWidth === 'sm' || screenWidth === 'xs'
 
     return (
-        <div className="cards max-w-7xl mx-auto p-2 grid grid-rows-1 grid-cols-3 gap-4">
-            <div className="my-2">
+        <div className="cards max-w-7xl mx-auto p-2 grid grid-rows-1 grid-cols-4 gap-1">
+            <div className="my-2 flex flex-reverse">
                 {hasBackLink && (
                     <Link
                         key={'home-link'}
@@ -73,6 +73,13 @@ const Header = ({
                         </div>
                     </button>
                 )}
+            </div>
+            <h1
+                className="col-span-2 whitespace-nowrap content-center text-3xl text-white font-bold py-2.5"
+                data-test-id="pageTitle">
+                {title}
+            </h1>
+            <div className="my-2 flex flex-row-reverse">
                 {hasUndoButton && (
                     <button
                         key={'undo-button'}
@@ -108,11 +115,6 @@ const Header = ({
                     </button>
                 )}
             </div>
-            <h1
-                className="col-start-2 whitespace-nowrap content-center text-3xl text-white font-bold py-2.5"
-                data-test-id="pageTitle">
-                {title}
-            </h1>
         </div>
     )
 }

@@ -96,7 +96,7 @@ const SpiderEasy = () => {
     return (
         <>
             <Header
-                title="Spider Solitaire (Easy)"
+                title="Spider (Easy)"
                 hasBackLink
                 hasRestartButton
                 hasUndoButton
