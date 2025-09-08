@@ -25,7 +25,7 @@ const Header = ({
 
     return (
         <div className="cards max-w-7xl mx-auto p-2 grid grid-rows-1 grid-cols-4 gap-1">
-            <div className="my-2 flex flex-reverse">
+            <div className="my-2 flex flex-row-reverse">
                 {hasBackLink && (
                     <Link
                         key={'home-link'}

@@ -15,8 +15,11 @@ export const useUndo = (initialCards: CardInGame[]): UndoState => {
     )
 
     const saveState = useCallback((cards: CardInGame[]) => {
-        // Deep copy the current state to store as previous state
-        setPreviousState(JSON.parse(JSON.stringify(cards)) as CardInGame[])
+        // Deep copy using more efficient method than JSON.parse(JSON.stringify())
+        const deepCopy = cards.map((card) => ({
+            ...card,
+        }))
+        setPreviousState(deepCopy)
     }, [])
 
     const undo = useCallback((): CardInGame[] => {
