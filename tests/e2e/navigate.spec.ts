@@ -18,4 +18,17 @@ test.describe('navigation', () => {
         await expect(page).toHaveURL('http://localhost:3000')
         await expect(page.locator('h1[data-test-id="pageTitle"]')).toBeVisible()
     })
+
+    test('should navigate to the spider easy page and back to home page', async ({
+        page,
+    }) => {
+        await page.click('text=Spider solitaire (Easy)')
+        await expect(page).toHaveURL('http://localhost:3000/spider/easy/')
+        await expect(
+            page.locator('div[data-rfd-droppable-id="0"]')
+        ).toBeVisible()
+        await page.click('text=Back')
+        await expect(page).toHaveURL('http://localhost:3000')
+        await expect(page.locator('h1[data-test-id="pageTitle"]')).toBeVisible()
+    })
 })
