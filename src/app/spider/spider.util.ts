@@ -1,16 +1,35 @@
 import { DropResult } from '@hello-pangea/dnd'
 import { ScreenHeight } from 'src/utils/screen.util'
 import {
+    Card,
     CardInGame,
     CardPosition,
+    Rank,
     Suit,
     getCards,
     getMaxStackPosition,
     handleCardMovementEnd,
+    shuffle,
 } from 'src/utils/cards.util'
 import { hasSameSuit, isOneRankLower } from 'src/utils/validation.util'
 
 const stockPilePosition = 10
+
+const getEasyModeCards = (): Card[] => {
+    const suits: Suit[] = ['spades', 'hearts']
+    const deckOfCards: Card[] = suits
+        .map((suit) =>
+            Array.from(new Array(13), (_, i) => i + 1).map((rank) => ({
+                suit: suit,
+                rank: rank as Rank,
+            }))
+        )
+        .flat()
+
+    return shuffle(
+        deckOfCards.flatMap((i) => Array.from({ length: 4 }).fill(i) as Card[])
+    )
+}
 
 const cardPositionSetup: CardPosition[] = [...Array(6).keys()]
     .map((i) =>
@@ -102,8 +121,9 @@ const clearFullStacks = (cards: CardInGame[]): CardInGame[] => {
     return cards
 }
 
-export const getSetup = (): CardInGame[] =>
-    getCards(2).map((c, i) => {
+export const getSetup = (easyMode = false): CardInGame[] => {
+    const cards = easyMode ? getEasyModeCards() : getCards(2)
+    return cards.map((c, i) => {
         return cardPositionSetup[i]
             ? {
                   ...c,
@@ -117,6 +137,7 @@ export const getSetup = (): CardInGame[] =>
                   id: `10_${i - cardPositionSetup.length}`,
               }
     })
+}
 
 export const handleStockPileClick = (cards: CardInGame[]) => {
     const items = [...cards]

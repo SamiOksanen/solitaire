@@ -49,7 +49,7 @@ const deckOfCards: Card[] = suits
     )
     .flat()
 
-const shuffle = (array: Card[]) => {
+export const shuffle = (array: Card[]) => {
     let currentIndex = array.length,
         randomIndex
 
