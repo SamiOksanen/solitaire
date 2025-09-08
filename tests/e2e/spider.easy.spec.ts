@@ -69,9 +69,7 @@ test.describe('Spider solitaire easy page', () => {
         // Check that only spades and hearts cards are present
         // This test would ideally check the card suits, but since we can't directly
         // access the card data in e2e tests, we'll verify the game mechanics work
-        await expect(page.locator('h1')).toContainText(
-            'Spider Solitaire (Easy)'
-        )
+        await expect(page.locator('h1')).toContainText('Spider (Easy)')
 
         // Verify the game loads and stock pile has correct number of cards (104 total - 52 dealt)
         await expect(
