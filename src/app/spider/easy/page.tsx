@@ -20,9 +20,12 @@ import AlertModal from 'src/components/modal/AlertModal'
 import PlayAgainModal from 'src/components/modal/PlayAgainModal'
 import Header from 'src/components/Header'
 import { ScreenHeight, ScreenWidth } from 'src/utils/screen.util'
+import { useUndo } from 'src/utils/hooks/useUndo'
 
 const SpiderEasy = () => {
-    const [cards, setCards] = useState(getSetup(true))
+    const initialCards = getSetup(true)
+    const [cards, setCards] = useState(initialCards)
+    const { canUndo, saveState, undo, clearHistory } = useUndo(initialCards)
     const [alertModalIsOpen, setAlertModalIsOpen] = useState(false)
     const [alertModalContent, setAlertModalContent] = useState('')
     const [retryModalIsOpen, setRetryModalIsOpen] = useState(false)
@@ -37,13 +40,11 @@ const SpiderEasy = () => {
     }
 
     const handleOnDragEnd = (result: DropResult) => {
-        setCards(
-            handleSpiderCardMovementEnd(
-                result,
-                cards,
-                isAllowedMove(result, cards, openAlertModal)
-            )
-        )
+        const isAllowed = isAllowedMove(result, cards, openAlertModal)
+        if (isAllowed) {
+            saveState(cards) // Save current state before making changes
+        }
+        setCards(handleSpiderCardMovementEnd(result, cards, isAllowed))
     }
 
     useEffect(() => {
@@ -53,16 +54,22 @@ const SpiderEasy = () => {
                 'Congratulations! You have completed the game!'
             )
             setRetryModalIsOpen(true)
+            clearHistory() // Clear undo history when game is completed
         } else {
             if (!hasValidMovesLeft(cards)) {
                 setRetryModalContent('No more moves left!')
                 setRetryModalIsOpen(true)
             }
         }
-    }, [cards])
+    }, [cards, clearHistory])
 
     const handleStockPileCardClick = () => {
+        saveState(cards) // Save current state before making changes
         setCards(handleStockPileClick(cards))
+    }
+
+    const handleUndo = () => {
+        setCards(undo())
     }
 
     const openAlertModal = (content: string) => {
@@ -92,6 +99,9 @@ const SpiderEasy = () => {
                 title="Spider Solitaire (Easy)"
                 hasBackLink
                 hasRestartButton
+                hasUndoButton
+                onUndo={handleUndo}
+                canUndo={canUndo}
             />
             <DragDropContext
                 onDragStart={handleOnDragStart}

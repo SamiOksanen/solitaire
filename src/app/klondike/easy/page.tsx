@@ -24,9 +24,12 @@ import {
 import AlertModal from 'src/components/modal/AlertModal'
 import PlayAgainModal from 'src/components/modal/PlayAgainModal'
 import Header from 'src/components/Header'
+import { useUndo } from 'src/utils/hooks/useUndo'
 
 const Klondike = () => {
-    const [cards, setCards] = useState(getSetup())
+    const initialCards = getSetup()
+    const [cards, setCards] = useState(initialCards)
+    const { canUndo, saveState, undo, clearHistory } = useUndo(initialCards)
     const [alertModalIsOpen, setAlertModalIsOpen] = useState(false)
     const [alertModalContent, setAlertModalContent] = useState('')
     const [retryModalIsOpen, setRetryModalIsOpen] = useState(false)
@@ -41,13 +44,11 @@ const Klondike = () => {
     }
 
     const handleOnDragEnd = (result: DropResult) => {
-        setCards(
-            handleCardMovementEnd(
-                result,
-                cards,
-                isAllowedMove(result, cards, openAlertModal, true)
-            )
-        )
+        const isAllowed = isAllowedMove(result, cards, openAlertModal, true)
+        if (isAllowed) {
+            saveState(cards) // Save current state before making changes
+        }
+        setCards(handleCardMovementEnd(result, cards, isAllowed))
     }
 
     useEffect(() => {
@@ -57,16 +58,22 @@ const Klondike = () => {
                 'Congratulations! You have completed the game!'
             )
             setRetryModalIsOpen(true)
+            clearHistory() // Clear undo history when game is completed
         } else {
             if (!hasValidMovesLeft(cards, 1, true)) {
                 setRetryModalContent('No more moves left!')
                 setRetryModalIsOpen(true)
             }
         }
-    }, [cards])
+    }, [cards, clearHistory])
 
     const handleStockPileCardClick = () => {
+        saveState(cards) // Save current state before making changes
         setCards(handleStockPileClick(cards, 1))
+    }
+
+    const handleUndo = () => {
+        setCards(undo())
     }
 
     const openAlertModal = (content: string) => {
@@ -76,7 +83,14 @@ const Klondike = () => {
 
     return (
         <>
-            <Header title="Klondike (Easy)" hasBackLink hasRestartButton />
+            <Header
+                title="Klondike (Easy)"
+                hasBackLink
+                hasRestartButton
+                hasUndoButton
+                onUndo={handleUndo}
+                canUndo={canUndo}
+            />
             <DragDropContext
                 onDragStart={handleOnDragStart}
                 onDragEnd={handleOnDragEnd}>
