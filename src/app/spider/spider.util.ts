@@ -71,8 +71,8 @@ const clearFullStacks = (cards: CardInGame[]): CardInGame[] => {
         (c) => c.boardPosition !== stockPilePosition
     )
     for (const c of tableauCards) {
-        if (c.rank === 13) {
-            const sameSuitCardsAbove = cards.filter(
+        if (c.rank === 13 && c.revealed) {
+            const sameSuitCardsAbove = tableauCards.filter(
                 (c2) =>
                     c2.boardPosition === c.boardPosition &&
                     c2.stackPosition > c.stackPosition &&
@@ -81,7 +81,7 @@ const clearFullStacks = (cards: CardInGame[]): CardInGame[] => {
             if (sameSuitCardsAbove.length === 12) {
                 const isInOrder = () => {
                     for (const cardAbove of sameSuitCardsAbove) {
-                        const cardBelow = cards.find(
+                        const cardBelow = tableauCards.find(
                             (cb) =>
                                 cardAbove.boardPosition === cb.boardPosition &&
                                 cardAbove.stackPosition - 1 === cb.stackPosition
@@ -108,6 +108,12 @@ const clearFullStacks = (cards: CardInGame[]): CardInGame[] => {
         let i = 0
         while (i < cards.length) {
             if (
+                cards[i].stackPosition === minStackPos - 1 &&
+                cards[i].boardPosition === boardPos
+            ) {
+                cards[i].revealed = true
+                i++
+            } else if (
                 cards[i].suit === suit &&
                 cards[i].stackPosition >= minStackPos &&
                 cards[i].boardPosition === boardPos
@@ -203,14 +209,6 @@ export const isAllowedMove = (
             return false
         }
         if (lastDestinationCard) {
-            /*
-            if (!hasSameSuit(firstDraggedCard, lastDestinationCard)) {
-                openModal(
-                    'Cannot move the card on top of a card that is not the same color of suit!'
-                )
-                return false
-            }
-            */
             if (!isOneRankLower(firstDraggedCard, lastDestinationCard)) {
                 openModal(
                     'Cannot move the card on top of a card that is not one rank greater!'
