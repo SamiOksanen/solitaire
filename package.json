@@ -9,7 +9,8 @@
         "start": "npx http-server out -p 3000",
         "lint": "next lint",
         "format": "prettier --write \"./**/*.{ts,tsx,css}\"",
-        "test:e2e": "playwright test"
+        "test:e2e": "playwright test",
+        "analyze": "cross-env ANALYZE=true npm run build"
     },
     "dependencies": {
         "@hello-pangea/dnd": "^18.0.1",
@@ -22,6 +23,7 @@
     "devDependencies": {
         "@eslint/eslintrc": "^3.3.1",
         "@eslint/js": "^9.28.0",
+        "@next/bundle-analyzer": "^15.5.3",
         "@playwright/test": "^1.52.0",
         "@tailwindcss/postcss": "^4.1.8",
         "@types/node": "^22.15.29",
@@ -31,6 +33,7 @@
         "@types/react-modal": "^3.16.3",
         "@typescript-eslint/eslint-plugin": "^8.33.0",
         "@typescript-eslint/parser": "^8.33.0",
+        "cross-env": "^10.0.0",
         "eslint": "^9.28.0",
         "eslint-config-next": "^15.3.3",
         "eslint-config-prettier": "^10.1.5",
