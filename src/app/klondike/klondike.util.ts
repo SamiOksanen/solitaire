@@ -185,11 +185,10 @@ export const isAllowedMove = (
     return true
 }
 
-export const hasValidMovesLeft = (
+const getPlayableStockCards = (
     cards: CardInGame[],
-    cardsFromStockToWaste = 3,
-    easyMode = false
-): boolean => {
+    cardsFromStockToWaste: number
+): CardInGame[] => {
     const stockPileCards = cards
         .filter((c) => c.boardPosition === 1)
         .sort((a, b) => b.stackPosition - a.stackPosition)
@@ -202,7 +201,7 @@ export const hasValidMovesLeft = (
             (i + 1) % cardsFromStockToWaste === 0 ||
             i + 1 === stockPileCards.length
     )
-    const playableStockCards = [
+    return [
         ...allStockCards.filter(
             (c, i) =>
                 (i + 1) % cardsFromStockToWaste === 0 ||
@@ -213,70 +212,162 @@ export const hasValidMovesLeft = (
         ),
         ...playableCurrentStockPileCards,
     ]
-    const hasEmptyBoardPositions = [7, 8, 9, 10, 11, 12, 13].some(
+}
+
+const hasEmptyTableauPositions = (cards: CardInGame[]): boolean => {
+    return [7, 8, 9, 10, 11, 12, 13].some(
         (p) => !cards.some((c) => c.boardPosition === p)
     )
-    for (const c of cards) {
-        if (foundations.includes(c.boardPosition)) {
+}
+
+const getCardBelow = (
+    card: CardInGame,
+    cards: CardInGame[]
+): CardInGame | undefined => {
+    return cards.find(
+        (cb) =>
+            card.boardPosition === cb.boardPosition &&
+            card.stackPosition - 1 === cb.stackPosition
+    )
+}
+
+const isCardPlayable = (
+    card: CardInGame,
+    cards: CardInGame[],
+    playableStockCards: CardInGame[]
+): boolean => {
+    const cardBelow = getCardBelow(card, cards)
+    const isPlayableStockCard = playableStockCards.some(
+        (sc) =>
+            card.boardPosition === sc.boardPosition &&
+            card.stackPosition === sc.stackPosition
+    )
+
+    return (
+        isPlayableStockCard ||
+        (card.revealed &&
+            !foundations.includes(card.boardPosition) &&
+            !blockedDestinations.includes(card.boardPosition) &&
+            (card.stackPosition ===
+                getMaxStackPosition(card.boardPosition, cards) ||
+                (cardBelow && !cardBelow.revealed) ||
+                (!cardBelow && card.rank !== 13)))
+    )
+}
+
+const canMoveToFoundation = (
+    card: CardInGame,
+    targetCard: CardInGame,
+    cards: CardInGame[],
+    playableStockCards: CardInGame[]
+): boolean => {
+    const isPlayableStockCard = playableStockCards.some(
+        (sc) =>
+            card.boardPosition === sc.boardPosition &&
+            card.stackPosition === sc.stackPosition
+    )
+
+    return (
+        (card.stackPosition ===
+            getMaxStackPosition(card.boardPosition, cards) ||
+            isPlayableStockCard) &&
+        hasSameSuit(card, targetCard) &&
+        isOneRankGreater(card, targetCard)
+    )
+}
+
+const canMoveToTableau = (
+    card: CardInGame,
+    targetCard: CardInGame,
+    cards: CardInGame[],
+    playableStockCards: CardInGame[]
+): boolean => {
+    const cardBelow = getCardBelow(card, cards)
+    const isPlayableStockCard = playableStockCards.some(
+        (sc) =>
+            card.boardPosition === sc.boardPosition &&
+            card.stackPosition === sc.stackPosition
+    )
+
+    return (
+        ((!cardBelow && card.rank !== 13) ||
+            (cardBelow && !cardBelow.revealed) ||
+            isPlayableStockCard) &&
+        !hasSameSuitColor(card, targetCard) &&
+        isOneRankLower(card, targetCard)
+    )
+}
+
+export const hasValidMovesLeft = (
+    cards: CardInGame[],
+    cardsFromStockToWaste = 3,
+    easyMode = false
+): boolean => {
+    const playableStockCards = getPlayableStockCards(
+        cards,
+        cardsFromStockToWaste
+    )
+    const hasEmptyBoardPositions = hasEmptyTableauPositions(cards)
+
+    for (const card of cards) {
+        if (foundations.includes(card.boardPosition)) {
             continue
         }
-        const cardBelow = cards.find(
-            (cb) =>
-                c.boardPosition === cb.boardPosition &&
-                c.stackPosition - 1 === cb.stackPosition
-        )
+
+        if (!isCardPlayable(card, cards, playableStockCards)) {
+            continue
+        }
+
+        // Aces can always go to foundations
+        if (card.rank === 1) {
+            return true
+        }
+
+        // Kings can go to empty positions
+        const cardBelow = getCardBelow(card, cards)
         const isPlayableStockCard = playableStockCards.some(
             (sc) =>
-                c.boardPosition === sc.boardPosition &&
-                c.stackPosition === sc.stackPosition
+                card.boardPosition === sc.boardPosition &&
+                card.stackPosition === sc.stackPosition
         )
+
         if (
-            isPlayableStockCard ||
-            (c.revealed &&
-                !foundations.includes(c.boardPosition) &&
-                !blockedDestinations.includes(c.boardPosition) &&
-                (c.stackPosition ===
-                    getMaxStackPosition(c.boardPosition, cards) ||
-                    (cardBelow && !cardBelow.revealed) ||
-                    (!cardBelow && c.rank !== 13)))
+            hasEmptyBoardPositions &&
+            (card.rank === 13 || easyMode) &&
+            ((cardBelow && !cardBelow.revealed) || isPlayableStockCard)
         ) {
-            if (c.rank === 1) {
-                return true
-            }
+            return true
+        }
+
+        // Check for valid moves to other cards
+        for (const targetCard of cards) {
             if (
-                hasEmptyBoardPositions &&
-                (c.rank === 13 || easyMode) &&
-                ((cardBelow && !cardBelow.revealed) || isPlayableStockCard)
+                targetCard.revealed &&
+                targetCard.stackPosition ===
+                    getMaxStackPosition(targetCard.boardPosition, cards) &&
+                !blockedDestinations.includes(targetCard.boardPosition)
             ) {
-                return true
-            }
-            for (const c2 of cards) {
-                if (
-                    c2.revealed &&
-                    c2.stackPosition ===
-                        getMaxStackPosition(c2.boardPosition, cards) &&
-                    !blockedDestinations.includes(c2.boardPosition)
-                ) {
-                    if (foundations.includes(c2.boardPosition)) {
-                        if (
-                            (c.stackPosition ===
-                                getMaxStackPosition(c.boardPosition, cards) ||
-                                isPlayableStockCard) &&
-                            hasSameSuit(c, c2) &&
-                            isOneRankGreater(c, c2)
-                        ) {
-                            return true
-                        }
-                    } else {
-                        if (
-                            ((!cardBelow && c.rank !== 13) ||
-                                (cardBelow && !cardBelow.revealed) ||
-                                isPlayableStockCard) &&
-                            !hasSameSuitColor(c, c2) &&
-                            isOneRankLower(c, c2)
-                        ) {
-                            return true
-                        }
+                if (foundations.includes(targetCard.boardPosition)) {
+                    if (
+                        canMoveToFoundation(
+                            card,
+                            targetCard,
+                            cards,
+                            playableStockCards
+                        )
+                    ) {
+                        return true
+                    }
+                } else {
+                    if (
+                        canMoveToTableau(
+                            card,
+                            targetCard,
+                            cards,
+                            playableStockCards
+                        )
+                    ) {
+                        return true
                     }
                 }
             }

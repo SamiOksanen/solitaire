@@ -253,27 +253,24 @@ export const handleCardMovementEnd = (
     isAllowed: boolean
 ): CardInGame[] => {
     const items = [...cards]
-    const sourceCards = items.filter(
-        (c) => c.boardPosition === Number(result.source.droppableId)
-    )
     if (isAllowed) {
         const destinationMaxPosition = getMaxStackPosition(
             Number(result.destination?.droppableId),
             cards
         )
 
-        sourceCards.forEach((c) => {
-            if (c.stackPosition >= result.source.index) {
-                c.boardPosition = Number(result.destination?.droppableId)
-                c.stackPosition =
-                    destinationMaxPosition +
-                    c.stackPosition -
-                    result.source.index +
-                    1
-                c.isBeingDragged = false
-                c.isPartOfDragging = false
-            } else {
-                if (
+        items.forEach((c) => {
+            if (c.boardPosition === Number(result.source.droppableId)) {
+                if (c.stackPosition >= result.source.index) {
+                    c.boardPosition = Number(result.destination?.droppableId)
+                    c.stackPosition =
+                        destinationMaxPosition +
+                        c.stackPosition -
+                        result.source.index +
+                        1
+                    c.isBeingDragged = false
+                    c.isPartOfDragging = false
+                } else if (
                     c.stackPosition === result.source.index - 1 &&
                     !c.revealed
                 ) {
@@ -282,8 +279,8 @@ export const handleCardMovementEnd = (
             }
         })
     } else {
-        sourceCards.forEach((c) => {
-            if (c.stackPosition >= result.source.index) {
+        items.forEach((c) => {
+            if (c.boardPosition === Number(result.source.droppableId)) {
                 c.isBeingDragged = false
                 c.isPartOfDragging = false
             }

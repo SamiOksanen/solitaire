@@ -41,22 +41,35 @@ const cardPositionSetup: CardPosition[] = [...Array(6).keys()]
     )
     .flat()
 
-const isInSuitSequence = (cards: CardInGame[], card: CardInGame): boolean => {
-    const cardsAbove = cards.filter(
+const getCardsAbove = (cards: CardInGame[], card: CardInGame): CardInGame[] => {
+    return cards.filter(
         (c) =>
             c.revealed &&
             c.boardPosition === card.boardPosition &&
             c.stackPosition > card.stackPosition
     )
+}
+
+const isValidSequenceCard = (
+    cardAbove: CardInGame,
+    sourceCard: CardInGame,
+    allCards: CardInGame[]
+): boolean => {
+    return allCards.some(
+        (cardBelow) =>
+            cardAbove.boardPosition === cardBelow.boardPosition &&
+            cardAbove.stackPosition - 1 === cardBelow.stackPosition &&
+            hasSameSuit(cardAbove, sourceCard) &&
+            isOneRankLower(cardAbove, cardBelow)
+    )
+}
+
+const isInSuitSequence = (cards: CardInGame[], card: CardInGame): boolean => {
+    const cardsAbove = getCardsAbove(cards, card)
     const sourceAndCardsAbove = [card, ...cardsAbove]
+
     return cardsAbove.every((cardAbove) =>
-        sourceAndCardsAbove.some(
-            (cardBelow) =>
-                cardAbove.boardPosition === cardBelow.boardPosition &&
-                cardAbove.stackPosition - 1 === cardBelow.stackPosition &&
-                hasSameSuit(cardAbove, card) &&
-                isOneRankLower(cardAbove, cardBelow)
-        )
+        isValidSequenceCard(cardAbove, card, sourceAndCardsAbove)
     )
 }
 
