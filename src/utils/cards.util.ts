@@ -262,15 +262,6 @@ export const handleCardMovementEnd = (
         items.forEach((c) => {
             if (c.boardPosition === Number(result.source.droppableId)) {
                 if (c.stackPosition >= result.source.index) {
-                    console.log(
-                        c.boardPosition,
-                        c.stackPosition,
-                        Number(result.destination?.droppableId),
-                        destinationMaxPosition +
-                            c.stackPosition -
-                            result.source.index +
-                            1
-                    )
                     c.boardPosition = Number(result.destination?.droppableId)
                     c.stackPosition =
                         destinationMaxPosition +
