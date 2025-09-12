@@ -39,6 +39,7 @@ export const getSetup = (): CardInGame[] =>
                   ...c,
                   boardPosition: 1,
                   stackPosition: i - cardPositionSetup.length,
+                  revealed: false,
                   id: `1_${i - cardPositionSetup.length}`,
               }
     })

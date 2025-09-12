@@ -29,7 +29,7 @@ export interface Card {
 export interface CardPosition {
     boardPosition: number
     stackPosition: number
-    revealed?: boolean
+    revealed: boolean
 }
 
 export interface CardInGame extends Card, CardPosition {

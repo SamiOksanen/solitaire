@@ -44,7 +44,12 @@ const Spider = () => {
         if (isAllowed) {
             saveState(cards) // Save current state before making changes
         }
-        setCards(handleSpiderCardMovementEnd(result, cards, isAllowed))
+        const newCards = handleSpiderCardMovementEnd(result, cards, isAllowed)
+        setCards(newCards)
+        if (!hasValidMovesLeft(newCards)) {
+            setRetryModalContent('No more moves left!')
+            setRetryModalIsOpen(true)
+        }
     }
 
     useEffect(() => {
@@ -55,17 +60,17 @@ const Spider = () => {
             )
             setRetryModalIsOpen(true)
             clearHistory() // Clear undo history when game is completed
-        } else {
-            if (!hasValidMovesLeft(cards)) {
-                setRetryModalContent('No more moves left!')
-                setRetryModalIsOpen(true)
-            }
         }
     }, [cards, clearHistory])
 
     const handleStockPileCardClick = () => {
         saveState(cards) // Save current state before making changes
-        setCards(handleStockPileClick(cards))
+        const newCards = handleStockPileClick(cards)
+        setCards(newCards)
+        if (!hasValidMovesLeft(newCards)) {
+            setRetryModalContent('No more moves left!')
+            setRetryModalIsOpen(true)
+        }
     }
 
     const handleUndo = () => {
